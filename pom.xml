@@ -170,6 +170,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 缺项管理-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-defects</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -180,7 +187,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-        <module>Test</module>
+        <module>ruoyi-defects</module>
     </modules>
     <packaging>pom</packaging>
 
