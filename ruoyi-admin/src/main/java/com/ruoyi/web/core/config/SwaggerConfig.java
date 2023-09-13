@@ -2,6 +2,7 @@ package com.ruoyi.web.core.config;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -122,4 +123,36 @@ public class SwaggerConfig
                 .version("版本号:" + ruoyiConfig.getVersion())
                 .build();
     }
+
+
+    /**
+     * 测试计划的桶
+     */
+    @Bean
+    public Docket apiPlan() {
+        return new Docket(DocumentationType.OAS_30)
+                // 设置API信息
+                .apiInfo(apiInfoPlan())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.plan"))
+                // 设置URL路径匹配规则
+                .paths(PathSelectors.ant("/test/plan/**"))
+                .build()
+                .groupName("测试计划")
+                ;
+
+    }
+    private ApiInfo apiInfoPlan() {
+        return new ApiInfoBuilder()
+                // 标题
+                .title("测试计划 API")
+                // 描述
+                .description("测试计划相关的接口")
+                // 作者
+                .contact(new Contact("lxz",null,null))
+                .build();
+    }
+    
+
+
 }

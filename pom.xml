@@ -170,6 +170,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!--测试计划-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>test-plan</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -180,7 +187,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-        <module>Test</module>
+        <module>test-plan</module>
     </modules>
     <packaging>pom</packaging>
 
