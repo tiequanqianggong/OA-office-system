@@ -2,6 +2,7 @@ package com.ruoyi.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @TableName("project_team")
+@ApiModel("ProjectTeam")
 public class ProjectTeam  implements Serializable {
     @ApiParam(value = "项目成员表id", name = "Id")
     private Long Id;//项目成员表id(不需要，自增)

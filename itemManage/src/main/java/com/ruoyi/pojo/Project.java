@@ -3,6 +3,7 @@ package com.ruoyi.pojo;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.Annotation.Percentage;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @TableName("project")
 @Builder
+@ApiModel("Project")
 public class Project implements Serializable {
     @ApiParam(value = "项目表id", name = "Id" , required = false)
     private Long Id;//项目表id

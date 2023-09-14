@@ -12,7 +12,9 @@ import com.ruoyi.pojo.dto.ProjectPageQueryDTO;
 import com.ruoyi.pojo.vo.ProjectVO;
 import com.ruoyi.service.IProjectService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,8 @@ public class ProjectController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:project:query')")
     @Log(title = "项目管理", businessType = BusinessType.OTHER)
     @GetMapping("/query")
-    public TableDataInfo QueryProject(@RequestBody(required = false) ProjectPageQueryDTO projectPageQueryDTO){
+    @ApiImplicitParam(name = "QueryProject",value = "分页查询/条件查询")
+    public TableDataInfo QueryProject(@RequestBody(required = false)ProjectPageQueryDTO projectPageQueryDTO){
         List<Project> projectList =iProjectService.QueryProject(projectPageQueryDTO);
         List<ProjectVO> projectVOList = new ArrayList<>();
         for (Project project:projectList){
@@ -66,6 +69,7 @@ public class ProjectController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:project:delete')")
     @Log(title = "项目管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{projectId}")
+    @ApiImplicitParam(name = "DeleteProject",value = "根据projectId删除")
     public AjaxResult DeleteProject(@PathVariable Long projectId){
         //通过提供id条件 分页查询
         ProjectPageQueryDTO projectPageQueryDTO=ProjectPageQueryDTO.builder()
@@ -94,19 +98,22 @@ public class ProjectController extends BaseController {
     @Log(title = "项目管理", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('system:project:update')")
     @PutMapping("/update")
+    @ApiImplicitParam(name = "UpdateProject",value = "根据projectId修改")
     public AjaxResult UpdateProject(@Validated @RequestBody ProjectUpdateDTO projectUpdateDTO){
         return toAjax(iProjectService.UpdateProject(projectUpdateDTO));
     }
 
 
-
-
-
-
+    /**
+     * 项目添加
+     * @param project
+     * @return
+     */
     @ApiOperation("项目管理添加")
     @PreAuthorize("@ss.hasPermi('system:project:add')")
     @Log(title = "项目管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
+    @ApiImplicitParam(name = "AddProject",value = "项目添加")
     public AjaxResult AddProject(@Validated @RequestBody Project project){
         ProjectPageQueryDTO projectPageQueryDTO=new ProjectPageQueryDTO();
         projectPageQueryDTO.setProjectId(project.getProjectId());

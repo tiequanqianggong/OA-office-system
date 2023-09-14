@@ -8,16 +8,12 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.pojo.Project;
 import com.ruoyi.pojo.ProjectTeam;
-import com.ruoyi.pojo.dto.ProjectPageQueryDTO;
-import com.ruoyi.pojo.dto.ProjectTeamAddDTO;
-import com.ruoyi.pojo.dto.ProjectTeamDTO;
-import com.ruoyi.pojo.dto.ProjectUpdateDTO;
+import com.ruoyi.pojo.dto.*;
 import com.ruoyi.pojo.vo.ProjectTeamVO;
-import com.ruoyi.pojo.vo.ProjectVO;
 import com.ruoyi.service.IProjectService;
 import com.ruoyi.service.IProjectTeamService;
-import com.ruoyi.service.impl.ProjectTeamServiceImpl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +46,7 @@ public class ProjectTeamController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:projectteam:query')")
     @Log(title = "项目团队管理", businessType = BusinessType.OTHER)
     @GetMapping("/query")
+    @ApiImplicitParam(name = "QueryProjectTeam",value = "分页查询/条件查询")
     public TableDataInfo QueryProjectTeam(@RequestBody(required = false) ProjectTeamDTO projectTeamDTO){
         //若依分页
         startPage();
@@ -86,6 +83,7 @@ public class ProjectTeamController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:projectteam:delete')")
     @Log(title = "项目成员管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete")
+    @ApiImplicitParam(name = "DeleteProject",value = "根据成员id进行删除")
     public AjaxResult DeleteProject(List<Long> teamIds){
         //记录本次删除了多少条数据
         int num=0;
@@ -100,22 +98,28 @@ public class ProjectTeamController extends BaseController {
 
     /**
      * 项目成员管理修改
-     * @param projectUpdateDTO
+     * @param projectTeamUpdateDTO
      * @return
      */
     @ApiOperation("项目成员管理修改")
     @Log(title = "项目成员管理", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('system:projectteam:update')")
     @PutMapping("/update")
-    public AjaxResult edit(@Validated @RequestBody ProjectUpdateDTO projectUpdateDTO){
-        return toAjax(iProjectService.UpdateProject(projectUpdateDTO));
+    @ApiImplicitParam(name = "UpdateProjectTeam",value = "根据成员id修改")
+    public AjaxResult UpdateProjectTeam(@Validated @RequestBody ProjectTeamUpdateDTO projectTeamUpdateDTO){
+        return toAjax(iProjectTeamService.UpdateProjectTeam(projectTeamUpdateDTO));
     }
 
 
-
+    /**
+     * 项目成员添加
+     * @param projectTeam
+     * @return
+     */
     @ApiOperation("项目成员管理添加")
     @PreAuthorize("@ss.hasPermi('system:projectteam:add')")
     @Log(title = "项目成员管理", businessType = BusinessType.INSERT)
+    @ApiImplicitParam(name = "AddProjectTeam",value = "项目成员添加")
     @PostMapping("/add")
     public AjaxResult AddProjectTeam(@Validated @RequestBody ProjectTeam projectTeam){
         ProjectTeamAddDTO projectTeamAddDTO=ProjectTeamAddDTO

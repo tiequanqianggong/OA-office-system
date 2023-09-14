@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
      * @return
      */
     @Override
+    @Transactional
     public List<Project> QueryProject(ProjectPageQueryDTO projectPageQueryDTO) {
 
 
@@ -74,6 +76,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
      * @return
      */
     @Override
+    @Transactional
     public Project selectDelFlag(ProjectPageQueryDTO projectPageQueryDTO) {
         return projectMapper.selectDelFlag(projectPageQueryDTO);
     }
@@ -99,6 +102,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
      * @return
      */
     @Override
+    @Transactional
     public int UpdateProject(ProjectUpdateDTO projectUpdateDTO) {
         Project project=new Project();
         BeanUtils.copyProperties(projectUpdateDTO,project);

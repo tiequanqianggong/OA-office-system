@@ -152,7 +152,17 @@ public class SwaggerConfig
                 .contact(new Contact("lxz",null,null))
                 .build();
     }
-    
+
+    private ApiInfo apiInfoPlanItem() {
+        return new ApiInfoBuilder()
+                // 标题
+                .title("项目管理 API")
+                // 描述
+                .description("测试计划相关的接口")
+                // 作者
+                .contact(new Contact("lcp",null,null))
+                .build();
+    }
 
 
 }

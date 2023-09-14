@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -42,6 +43,7 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
      * @return
      */
     @Override
+    @Transactional
     public List<ProjectTeam> QueryProjectTeam(ProjectTeamDTO projectTeamDTO) {
 
         PageDomain pageDomain = TableSupport.buildPageRequestNoDefault();
@@ -86,7 +88,7 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
      * @return
      */
     @Override
-
+    @Transactional
     public int deleteByTeamId(Long teamId) {
         //如果缓存存在，删除缓存
         if(redisCache.hasKey(projectTeamKey)){
@@ -102,6 +104,7 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
      * @return
      */
     @Override
+    @Transactional
     public int UpdateProjectTeam(ProjectTeamUpdateDTO projectTeamUpdateDTO) {
         ProjectTeam projectTeam=new ProjectTeam();
         BeanUtils.copyProperties(projectTeamUpdateDTO,projectTeam);
