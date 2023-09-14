@@ -60,6 +60,11 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
+        <!--测试计划-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>test-plan</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.ruoyi</groupId>
