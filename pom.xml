@@ -195,6 +195,7 @@
         <module>ruoyi-common</module>
         <module>itemManage</module>
         <module>test-plan</module>
+        <module>ruoyi-defects</module>
     </modules>
     <packaging>pom</packaging>
 
