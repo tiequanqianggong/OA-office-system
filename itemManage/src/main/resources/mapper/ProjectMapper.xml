@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.mapper.ProjectMapper">
+
+    <resultMap id="ProjectResult" type="com.ruoyi.pojo.Project">
+        <id property="id" column="id"/>
+        <result property="projectId" column="project_id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="projectType" column="project_type"/>
+        <result property="projectStatus" column="project_status"/>
+        <result property="projectMaterial" column="project_material"/>
+        <result property="projectDescription" column="project_description"/>
+        <result property="projectPrincipal" column="project_principal"/>
+        <result property="projectCreateTime" column="project_createtime"/>
+        <result property="projectStartTime" column="project_starttime"/>
+        <result property="projectUpdateTime" column="project_updatetime"/>
+        <result property="projectTeam" column="project_team"/>
+        <result property="projectPriority" column="project_priority"/>
+        <result property="projectProgress" column="project_progress"/>
+        <result property="projectBudget" column="project_budget"/>
+        <result property="projectDepartment" column="project_department"/>
+        <result property="projectDelFlag" column="project_del_flag"/>
+    </resultMap>
+    <insert id="AddProject" parameterType="com.ruoyi.pojo.Project">
+        INSERT INTO project (
+            project_id, project_name, project_type, project_status,project_material,
+            project_description, project_principal, project_createtime, project_starttime, project_endtime,
+            project_updatetime, project_team, project_priority, project_progress, project_budget, project_department,project_del_flag)
+        VALUES (
+                   #{projectId},
+                   #{projectName},
+                   #{projectType},
+                   #{projectStatus},
+                   #{projectMaterial},
+                   #{projectDescription},
+                   #{projectPrincipal},
+                   #{projectCreateTime},
+                   #{projectStartTime},
+                   #{projectEndTime},
+                   #{projectUpdateTime},
+                   #{projectTeam},
+                   #{projectPriority},
+                   #{projectProgress},
+                   #{projectBudget},
+                   #{projectDepartment},
+                   #{projectDelFlag}
+               )
+    </insert>
+
+
+
+    <update id="UpdateProject" parameterType="com.ruoyi.pojo.Project">
+        update project
+        <set>
+            <if test="projectName != null and projectName != ''">project_name = #{projectName}, </if>
+            <if test="projectType != null and projectType != ''">project_type = #{projectType}, </if>
+            <if test="projectStatus != null and projectStatus !=0">project_status = #{projectStatus}, </if>
+            <if test="projectMaterial != null and projectMaterial != ''">project_material = #{projectMaterial},</if>
+            <if test="projectDescription != null and projectDescription != ''">project_description = #{projectDescription},</if>
+            <if test="projectPrincipal != null and projectPrincipal != ''">project_principal = #{projectPrincipal},</if>
+
+            <if test="projectCreateTime != null">project_createtime = #{projectCreateTime},</if>
+            <if test="projectStartTime != null">project_starttime = #{projectStartTime},</if>
+            <if test="projectUpdateTime != null">project_updatetime = #{projectUpdateTime},</if>
+
+            <if test="projectTeam != null and projectTeam != ''">project_team = #{projectTeam},</if>
+            <if test="projectPriority != null and projectPriority != 0">project_priority = #{projectPriority},</if>
+            <if test="projectProgress != null and projectProgress != 0">project_progress = #{projectProgress},</if>
+            <if test="projectBudget != null and projectBudget != ''">project_budget = #{projectBudget},</if>
+            <if test="projectDepartment != null and projectDepartment != ''">project_department = #{projectDepartment},</if>
+        </set>
+        where project_id = #{projectId}
+    </update>
+
+
+    <delete id="delFlag">
+        update project
+        set project_del_flag = '1'
+        WHERE project_id = #{projectId}
+    </delete>
+
+    <select id="pageQuery" resultMap="ProjectResult">
+        select * from project
+        <where>
+            <if test="projectDepartment!= null and projectDepartment != ''">
+                and project_department  = #{projectDepartment}
+            </if>
+            <if test="projectPrincipal!= null and projectPrincipal != ''">
+                and project_principal  = #{projectPrincipal}
+            </if>
+            <if test="projectType!= null and projectType != ''">
+                and project_type  = #{projectType}
+            </if>
+            <if test="projectName!= null and projectName != ''">
+                and project_name  like concat('%',#{projectName},'%')
+            </if>
+            <if test="projectStatus != null and projectStatus!= 0">
+                and project_status = #{projectStatus}
+            </if>
+            <if test="projectId != null and projectId != 0">
+                and project_id = #{projectId}
+            </if>
+                and project_del_flag = '0'
+        </where>
+        order by project_id  asc , project_createtime desc
+    </select>
+    <select id="selectDelFlag" resultType="com.ruoyi.pojo.Project">
+        SELECT project_name,project_del_flag FROM project
+        <where>
+            <if test="projectDepartment!= null and projectDepartment != ''">
+                and project_department  = #{projectDepartment}
+            </if>
+            <if test="projectPrincipal!= null and projectPrincipal != ''">
+                and project_principal  = #{projectPrincipal}
+            </if>
+            <if test="projectType!= null and projectType != ''">
+                and project_type  = #{projectType}
+            </if>
+            <if test="projectName!= null and projectName != ''">
+                and project_name  like concat('%',#{projectName},'%')
+            </if>
+            <if test="projectStatus != null and projectStatus!= 0">
+                and project_status = #{projectStatus}
+            </if>
+            <if test="projectId != null and projectId != 0">
+                and project_id = #{projectId}
+            </if>
+            and project_del_flag = '1'
+         </where>
+    </select>
+
+</mapper>
