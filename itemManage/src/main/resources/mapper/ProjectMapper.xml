@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ruoyi.mapper.ProjectMapper">
+<mapper namespace="com.ruoyi.lcp.mapper.ProjectMapper">
 
-    <resultMap id="ProjectResult" type="com.ruoyi.pojo.Project">
+    <resultMap id="ProjectResult" type="com.ruoyi.lcp.pojo.Project">
         <id property="id" column="id"/>
         <result property="projectId" column="project_id"/>
         <result property="projectName" column="project_name"/>
@@ -14,6 +14,7 @@
         <result property="projectPrincipal" column="project_principal"/>
         <result property="projectCreateTime" column="project_createtime"/>
         <result property="projectStartTime" column="project_starttime"/>
+        <result property="projectEndTime" column="project_endtime"/>
         <result property="projectUpdateTime" column="project_updatetime"/>
         <result property="projectTeam" column="project_team"/>
         <result property="projectPriority" column="project_priority"/>
@@ -22,7 +23,7 @@
         <result property="projectDepartment" column="project_department"/>
         <result property="projectDelFlag" column="project_del_flag"/>
     </resultMap>
-    <insert id="AddProject" parameterType="com.ruoyi.pojo.Project">
+    <insert id="AddProject" parameterType="com.ruoyi.lcp.pojo.Project">
         INSERT INTO project (
             project_id, project_name, project_type, project_status,project_material,
             project_description, project_principal, project_createtime, project_starttime, project_endtime,
@@ -47,10 +48,13 @@
                    #{projectDelFlag}
                )
     </insert>
+    <insert id="AddId">
+        INSERT INTO project (project_id)
+        VALUES (#{id})
+    </insert>
 
 
-
-    <update id="UpdateProject" parameterType="com.ruoyi.pojo.Project">
+    <update id="UpdateProject" parameterType="com.ruoyi.lcp.pojo.Project">
         update project
         <set>
             <if test="projectName != null and projectName != ''">project_name = #{projectName}, </if>
@@ -105,7 +109,7 @@
         </where>
         order by project_id  asc , project_createtime desc
     </select>
-    <select id="selectDelFlag" resultType="com.ruoyi.pojo.Project">
+    <select id="selectDelFlag" resultType="com.ruoyi.lcp.pojo.Project">
         SELECT project_name,project_del_flag FROM project
         <where>
             <if test="projectDepartment!= null and projectDepartment != ''">
@@ -129,5 +133,17 @@
             and project_del_flag = '1'
          </where>
     </select>
+
+
+    <select id="selectIdByProjectId" resultType="java.lang.Long">
+        SELECT id FROM project
+        <where>
+           <if test="projectId != null and projectId != 0">
+            and project_id = #{projectId}
+           </if>
+            and project_del_flag = '0'
+        </where>
+    </select>
+
 
 </mapper>

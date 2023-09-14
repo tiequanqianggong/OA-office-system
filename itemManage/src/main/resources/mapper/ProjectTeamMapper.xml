@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ruoyi.mapper.ProjectTeamMapper">
+<mapper namespace="com.ruoyi.lcp.mapper.ProjectTeamMapper">
 
     <!-- 定义 ProjectTeam 实体类的 ResultMap -->
-    <resultMap id="ProjectTeamResultMap" type="com.ruoyi.pojo.ProjectTeam">
+    <resultMap id="ProjectTeamResultMap" type="com.ruoyi.lcp.pojo.ProjectTeam">
         <id property="id" column="id" />
         <result property="projectId" column="project_id" />
         <result property="teamId" column="team_id" />
@@ -19,7 +19,7 @@
         <result property="teamUpdateTime" column="team_updatetime" />
     </resultMap>
 
-    <insert id="AddProjectTeam" parameterType="com.ruoyi.pojo.ProjectTeam">
+    <insert id="AddProjectTeam" parameterType="com.ruoyi.lcp.pojo.ProjectTeam">
         INSERT INTO project_team (project_id, team_id, team_name, team_status, team_responsibility,
                                   team_role, team_creator, team_authority, team_starttime, team_createtime, team_updatetime)
         VALUES (
@@ -36,7 +36,7 @@
                    #{teamUpdateTime}
                )
     </insert>
-    <update id="UpdateProjectTeam" parameterType="com.ruoyi.pojo.ProjectTeam">
+    <update id="UpdateProjectTeam" parameterType="com.ruoyi.lcp.pojo.ProjectTeam">
         UPDATE project_team
         <set>
             <if test="projectId != null and projectId != 0">project_id = #{projectId},</if>
@@ -79,7 +79,7 @@
         </where>
         ORDER BY project_id ASC
     </select>
-    <select id="selectTeamByTeamIdAndName" resultType="com.ruoyi.pojo.ProjectTeam">
+    <select id="selectTeamByTeamIdAndName" resultType="com.ruoyi.lcp.pojo.ProjectTeam">
         SELECT  team_id,team_name FROM project_team
          <where>
              <if test="teamId != null and teamId != 0">
