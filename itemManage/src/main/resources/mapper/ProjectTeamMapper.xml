@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.mapper.ProjectTeamMapper">
+
+    <!-- 定义 ProjectTeam 实体类的 ResultMap -->
+    <resultMap id="ProjectTeamResultMap" type="com.ruoyi.pojo.ProjectTeam">
+        <id property="id" column="id" />
+        <result property="projectId" column="project_id" />
+        <result property="teamId" column="team_id" />
+        <result property="teamName" column="team_name" />
+        <result property="teamStatus" column="team_status" />
+        <result property="teamResponsibility" column="team_responsibility" />
+        <result property="teamRole" column="team_role" />
+        <result property="teamCreator" column="team_creator" />
+        <result property="teamAuthority" column="team_authority" />
+        <result property="teamStartTime" column="team_starttime"   />
+        <result property="teamCreateTime" column="team_createtime"  />
+        <result property="teamUpdateTime" column="team_updatetime" />
+    </resultMap>
+
+    <insert id="AddProjectTeam" parameterType="com.ruoyi.pojo.ProjectTeam">
+        INSERT INTO project_team (project_id, team_id, team_name, team_status, team_responsibility,
+                                  team_role, team_creator, team_authority, team_starttime, team_createtime, team_updatetime)
+        VALUES (
+                   #{projectId},
+                   #{teamId},
+                   #{teamName},
+                   #{teamStatus},
+                   #{teamResponsibility},
+                   #{teamRole},
+                   #{teamCreator},
+                   #{teamAuthority},
+                   #{teamStartTime},
+                   #{teamCreateTime},
+                   #{teamUpdateTime}
+               )
+    </insert>
+    <update id="UpdateProjectTeam" parameterType="com.ruoyi.pojo.ProjectTeam">
+        UPDATE project_team
+        <set>
+            <if test="projectId != null and projectId != 0">project_id = #{projectId},</if>
+            <if test="teamName != null and teamName != ''">team_name = #{teamName}, </if>
+            <if test="teamStatus != null and teamStatus !=0">project_status = #{teamStatus}, </if>
+            <if test="teamResponsibility != null and teamResponsibility != ''">team_responsibility = #{teamResponsibility},</if>
+            <if test="teamRole != null and teamRole != ''">team_role = #{teamRole},</if>
+            <if test="teamCreator != null and teamCreator != ''">team_creator = #{teamCreator},</if>
+            <if test="teamAuthority != null and teamAuthority != 0">team_authority = #{teamAuthority},</if>
+            <if test="teamStartTime != null">project_starttime = #{teamStartTime},</if>
+            <if test="teamCreateTime != null">team_createtime = #{teamCreateTime},</if>
+            <if test="teamUpdateTime != null">project_updatetime = #{teamUpdateTime},</if>
+
+        </set>
+        WHERE team_id = #{teamId}
+    </update>
+
+
+    <delete id="deleteByTeamId" parameterType="long" >
+            DELETE FROM project_team
+            WHERE team_id = #{teamId}
+    </delete>
+
+
+    <select id="pageQuery" resultMap="ProjectTeamResultMap">
+        SELECT * FROM project_team
+        <where>
+            <if test="teamId != null and teamId != 0">
+                AND team_id = #{teamId}
+            </if>
+            <if test="teamStatus != null and teamStatus != 0">
+                AND team_status = #{teamStatus}
+            </if>
+            <if test="teamRole != null and teamRole != ''">
+                AND team_role = #{teamRole}
+            </if>
+            <if test="teamResponsibility != null and teamResponsibility != ''">
+                AND team_responsibility = #{teamResponsibility}
+            </if>
+        </where>
+        ORDER BY project_id ASC
+    </select>
+    <select id="selectTeamByTeamIdAndName" resultType="com.ruoyi.pojo.ProjectTeam">
+        SELECT  team_id,team_name FROM project_team
+         <where>
+             <if test="teamId != null and teamId != 0">
+                 AND team_id = #{teamId}
+             </if>
+             <if test="teamName != null and teamName !=''">
+                 AND team_name = #{teamName}
+             </if>
+         </where>
+
+    </select>
+
+</mapper>

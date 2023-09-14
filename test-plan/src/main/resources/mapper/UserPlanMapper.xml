@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.plan.mapper.UserPlanMapper">
+<resultMap id="UserVOMap" type="com.ruoyi.plan.domain.vo.UserVO">
+    <id property="userId" column="user_id"/>
+    <result property="nickName" column="nick_name"/>
+    <result property="avatar" column="avatar"/>
+</resultMap>
+    <delete id="deleteUserPlanByPlanId" parameterType="Long">
+        delete from test_user_plan where test_plan_id=#{planId}
+    </delete>
+
+
+    <select id="findUserListById" resultMap="UserVOMap">
+        SELECT u.user_id, u.nick_name,u.avatar
+        FROM sys_user u
+                 JOIN test_user_plan up ON u.user_id = up.user_id
+        WHERE up.test_plan_id= #{planId};
+    </select>
+
+    <delete id="deleteUserPlanByPlanIds" parameterType="Long">
+        delete from test_user_plan  where test_plan_id in
+        <foreach collection="array" item="planId" open="(" separator="," close=")">
+            #{planId}
+        </foreach>
+    </delete>
+</mapper>

@@ -265,4 +265,15 @@ public class RedisCache
     {
         return redisTemplate.keys(pattern);
     }
+
+    /**
+     * 获得缓存的list对象  非默认
+     *
+     * @param key 缓存的键值
+     * @return 缓存键值对应的数据
+     */
+    public <T> List<T> getCacheListNoDefault(final String key,Long start,Long end)
+    {
+        return redisTemplate.opsForList().range(key,start, end);
+    }
 }

@@ -19,6 +19,7 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-defects</artifactId>
+            <version>3.8.6</version>
         </dependency>
         <!-- spring-boot-devtools -->
         <dependency>
@@ -63,11 +64,19 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
-
-        <!-- 缺项管理-->
+        <!--测试计划-->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-defects</artifactId>
+            <artifactId>test-plan</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>item</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

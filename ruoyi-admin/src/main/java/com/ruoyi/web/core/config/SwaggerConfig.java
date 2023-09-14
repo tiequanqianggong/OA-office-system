@@ -2,6 +2,7 @@ package com.ruoyi.web.core.config;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -68,6 +69,40 @@ public class SwaggerConfig
                 .pathMapping(pathMapping);
     }
 
+    @Bean
+    public Docket createDefectsApi()
+    {
+        return new Docket(DocumentationType.OAS_30)
+                // 是否启用Swagger
+                .enable(enabled)
+                // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
+                .apiInfo(apiInfodefects())
+                .groupName("缺陷管理")
+                // 设置哪些接口暴露给Swagger展示
+                .select()
+                // 扫描指定包中的swagger注解
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.web.controller.defects"))
+                .paths(PathSelectors.any())
+                .build()
+                /* 设置安全模式，swagger可以设置访问token */
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                .pathMapping(pathMapping);
+
+    }
+
+    private ApiInfo apiInfodefects() {
+        return new ApiInfoBuilder()
+                // 标题
+                .title("缺陷管理 API")
+                // 描述
+                .description("缺陷管理相关的接口")
+                // 作者
+                .contact(new Contact("hh","没有url","1635302937@qq.com"))
+                .build();
+    }
+
+
     /**
      * 安全模式，这里指定token通过Authorization头请求头传递
      */
@@ -122,4 +157,46 @@ public class SwaggerConfig
                 .version("版本号:" + ruoyiConfig.getVersion())
                 .build();
     }
+
+
+    /**
+     * 测试计划的桶
+     */
+    @Bean
+    public Docket apiPlan() {
+        return new Docket(DocumentationType.OAS_30)
+                // 设置API信息
+                .apiInfo(apiInfoPlan())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.plan"))
+                // 设置URL路径匹配规则
+                .paths(PathSelectors.ant("/test/plan/**"))
+                .build()
+                .groupName("测试计划")
+                ;
+
+    }
+    private ApiInfo apiInfoPlan() {
+        return new ApiInfoBuilder()
+                // 标题
+                .title("测试计划 API")
+                // 描述
+                .description("测试计划相关的接口")
+                // 作者
+                .contact(new Contact("lxz",null,null))
+                .build();
+    }
+
+    private ApiInfo apiInfoPlanItem() {
+        return new ApiInfoBuilder()
+                // 标题
+                .title("项目管理 API")
+                // 描述
+                .description("测试计划相关的接口")
+                // 作者
+                .contact(new Contact("lcp",null,null))
+                .build();
+    }
+
+
 }
