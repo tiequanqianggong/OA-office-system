@@ -182,7 +182,11 @@
                 <artifactId>test-plan</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-defects</artifactId>
+                <version>3.8.6</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

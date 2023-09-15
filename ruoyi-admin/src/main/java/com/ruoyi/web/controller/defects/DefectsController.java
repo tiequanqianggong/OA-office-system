@@ -5,6 +5,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.defects.domain.Defects;
 import com.ruoyi.defects.service.IDefectsService;
@@ -29,6 +30,8 @@ public class DefectsController extends BaseController
 {
     @Autowired
     private IDefectsService defectsService;
+
+
 
     /**
      * 查询缺陷管理列表
@@ -62,7 +65,11 @@ public class DefectsController extends BaseController
     @GetMapping(value = "/{defectId}")
     public AjaxResult getInfo(@PathVariable("defectId") Long defectId)
     {
-        return success(defectsService.selectDefectsByDefectId(defectId));
+        Defects defects = defectsService.selectDefectsByDefectId(defectId);
+        if (StringUtils.isNull(defects) || defects.getStatus().equals("0")){
+            return error("此缺陷不存在!");
+        }
+        return success(defects);
     }
 
     /**
@@ -96,5 +103,13 @@ public class DefectsController extends BaseController
     public AjaxResult remove(@PathVariable Long[] defectIds)
     {
         return toAjax(defectsService.deleteDefectsByDefectIds(defectIds));
+    }
+
+    @PreAuthorize("@ss.hasPermi('defects:defects:remove')")
+    @Log(title = "缺陷管理", businessType = BusinessType.DELETE)
+    @DeleteMapping("/test/{defectId}")
+    public AjaxResult remove(@PathVariable Long defectId)
+    {
+        return toAjax(defectsService.deleteDefectsByDefectId(defectId));
     }
 }
