@@ -24,7 +24,7 @@ import java.util.List;
  * @date 2023-09-11
  */
 @RestController
-@RequestMapping("/defects/defects")
+@RequestMapping("/defects")
 @Api("缺陷管理")
 public class DefectsController extends BaseController
 {
@@ -38,6 +38,7 @@ public class DefectsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('defects:defects:list')")
     @GetMapping("/list")
+
     public TableDataInfo list(Defects defects)
     {
         startPage();

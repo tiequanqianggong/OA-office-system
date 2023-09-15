@@ -196,10 +196,9 @@ public class SwaggerConfig
                 // 设置API信息
                 .apiInfo(apiInfoPlanItem())
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.ruoyi.lcp.controller"))
                 // 设置URL路径匹配规则
-                .paths(PathSelectors.ant("/project/**"))
-                .paths(PathSelectors.ant("/projectTeam/**"))
+                .paths(PathSelectors.any())
                 .build()
                 .groupName("项目管理")
                 ;

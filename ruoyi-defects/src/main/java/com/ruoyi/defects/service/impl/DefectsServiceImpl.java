@@ -134,7 +134,8 @@ public class DefectsServiceImpl implements IDefectsService
 //        删除数据库中的缺陷信息
         int i = defectsMapper.deleteDefectsByDefectId(defectId);
 //        删除缓存信息
-        redisCache.deleteObject(key);
+        boolean b = redisCache.deleteObject(key);
+        boolean b1 = redisCache.deleteObject(REDIS_KEY_LIST_BEFORE);
         return i;
     }
 
