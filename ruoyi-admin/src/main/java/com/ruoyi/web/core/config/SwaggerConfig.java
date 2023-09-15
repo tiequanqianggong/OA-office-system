@@ -187,6 +187,25 @@ public class SwaggerConfig
                 .build();
     }
 
+    /**
+     * 项目管理的桶
+     */
+    @Bean
+    public Docket apiProject() {
+        return new Docket(DocumentationType.OAS_30)
+                // 设置API信息
+                .apiInfo(apiInfoPlanItem())
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                // 设置URL路径匹配规则
+                .paths(PathSelectors.ant("/project/**"))
+                .paths(PathSelectors.ant("/projectTeam/**"))
+                .build()
+                .groupName("项目管理")
+                ;
+
+    }
+
     private ApiInfo apiInfoPlanItem() {
         return new ApiInfoBuilder()
                 // 标题
