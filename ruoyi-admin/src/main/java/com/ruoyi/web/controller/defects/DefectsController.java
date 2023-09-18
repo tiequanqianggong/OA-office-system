@@ -67,7 +67,7 @@ public class DefectsController extends BaseController
     public AjaxResult getInfo(@PathVariable("defectId") Long defectId)
     {
         Defects defects = defectsService.selectDefectsByDefectId(defectId);
-        if (StringUtils.isNull(defects) || defects.getStatus().equals("0")){
+        if (StringUtils.isNull(defects)){
             return error("此缺陷不存在!");
         }
         return success(defects);

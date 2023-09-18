@@ -47,7 +47,7 @@ public class DefectsServiceImpl implements IDefectsService
 //        判断是否存在
         if(StringUtils.isNotNull(cacheObject)){
 //        存在直接返回
-            cacheObject.setStatus("0");
+//            cacheObject.setStatus("0");
             return cacheObject;
         }
 //        缓存不存在 查询数据库并将数据存入缓存
@@ -87,7 +87,9 @@ public class DefectsServiceImpl implements IDefectsService
     @Override
     public int insertDefects(Defects defects)
     {
-        return defectsMapper.insertDefects(defects);
+        int i = defectsMapper.insertDefects(defects);
+        redisCache.deleteObject(REDIS_KEY_LIST_BEFORE);
+        return i;
     }
 
     /**
@@ -105,6 +107,7 @@ public class DefectsServiceImpl implements IDefectsService
         int i = defectsMapper.updateDefects(defects);
 //        删除缓存
         redisCache.deleteObject(key);
+        redisCache.deleteObject(REDIS_KEY_LIST_BEFORE);
         return i;
     }
 
@@ -117,7 +120,9 @@ public class DefectsServiceImpl implements IDefectsService
     @Override
     public int deleteDefectsByDefectIds(Long[] defectIds)
     {
-        return defectsMapper.deleteDefectsByDefectIds(defectIds);
+        int i = defectsMapper.deleteDefectsByDefectIds(defectIds);
+        redisCache.deleteObject(REDIS_KEY_LIST_BEFORE);
+        return i;
     }
 
     /**
