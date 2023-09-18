@@ -175,6 +175,19 @@
                 <artifactId>item</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+            <!-- 缺项管理-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-defects</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+<!--            测试用例模块-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>test_case</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
 
             <!--测试计划-->
             <dependency>
@@ -200,6 +213,7 @@
         <module>itemManage</module>
         <module>test-plan</module>
         <module>ruoyi-defects</module>
+        <module>test_case</module>
     </modules>
     <packaging>pom</packaging>
 

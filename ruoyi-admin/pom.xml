@@ -78,6 +78,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <!-- 测试用例模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>test_case</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

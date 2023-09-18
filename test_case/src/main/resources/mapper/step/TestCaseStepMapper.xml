@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.TestCaseStepMapper">
+    
+    <resultMap type="TestCaseStep" id="TestCaseStepResult">
+        <result property="id"    column="id"    />
+        <result property="testCaseId"    column="test_case_id"    />
+        <result property="name"    column="name"    />
+        <result property="expectResult"    column="expect_result"    />
+        <result property="testResult"    column="test_result"    />
+        <result property="actualSituation"    column="actual_situation"    />
+    </resultMap>
+
+    <sql id="selectTestCaseStepVo">
+        select id, test_case_id, name, expect_result, test_result, actual_situation from test_case_step
+    </sql>
+
+    <select id="selectTestCaseStepList" parameterType="TestCaseStep" resultMap="TestCaseStepResult">
+        <include refid="selectTestCaseStepVo"/>
+        <where>  
+            <if test="testCaseId != null "> and test_case_id = #{testCaseId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="expectResult != null  and expectResult != ''"> and expect_result = #{expectResult}</if>
+            <if test="testResult != null  and testResult != ''"> and test_result = #{testResult}</if>
+            <if test="actualSituation != null  and actualSituation != ''"> and actual_situation = #{actualSituation}</if>
+        </where>
+    </select>
+    
+    <select id="selectTestCaseStepById" parameterType="Long" resultMap="TestCaseStepResult">
+        <include refid="selectTestCaseStepVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTestCaseStep" parameterType="TestCaseStep" useGeneratedKeys="true" keyProperty="id">
+        insert into test_case_step
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testCaseId != null">test_case_id,</if>
+            <if test="name != null">name,</if>
+            <if test="expectResult != null">expect_result,</if>
+            <if test="testResult != null">test_result,</if>
+            <if test="actualSituation != null">actual_situation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testCaseId != null">#{testCaseId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="expectResult != null">#{expectResult},</if>
+            <if test="testResult != null">#{testResult},</if>
+            <if test="actualSituation != null">#{actualSituation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestCaseStep" parameterType="TestCaseStep">
+        update test_case_step
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="testCaseId != null">test_case_id = #{testCaseId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="expectResult != null">expect_result = #{expectResult},</if>
+            <if test="testResult != null">test_result = #{testResult},</if>
+            <if test="actualSituation != null">actual_situation = #{actualSituation},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTestCaseStepById" parameterType="Long">
+        delete from test_case_step where id = #{id}
+    </delete>
+
+    <delete id="deleteTestCaseStepByIds" parameterType="String">
+        delete from test_case_step where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+<!--    根据用例id 删除用例步骤-->
+    <delete id="deleteTestCaseStepByCaseIds" parameterType="String">
+        delete from test_case_step where test_case_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

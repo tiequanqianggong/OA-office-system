@@ -149,7 +149,7 @@ public class BaseController
         return rows > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
-    /**
+    /**d
      * 响应返回结果
      * 
      * @param result 结果

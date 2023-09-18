@@ -1,5 +1,9 @@
 package com.ruoyi.common.core.page;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.springframework.ui.Model;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,20 +12,25 @@ import java.util.List;
  * 
  * @author ruoyi
  */
+@ApiModel(value = "TableDataInfo 表格分页数据对象(ruoyi)")
 public class TableDataInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     /** 总记录数 */
+    @ApiModelProperty(value = "总记录数(ruoyi)", example = "50")
     private long total;
 
     /** 列表数据 */
+    @ApiModelProperty(value = "列表数据(ruoyi)")
     private List<?> rows;
 
     /** 消息状态码 */
+    @ApiModelProperty(value = "消息状态码(ruoyi)")
     private int code;
 
     /** 消息内容 */
+    @ApiModelProperty(value = "消息内容(ruoyi)")
     private String msg;
 
     /**
