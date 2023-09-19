@@ -43,5 +43,9 @@ public interface IProjectTeamService{
      */
     int AddProjectTeam(ProjectTeam projectTeam);
 
-
+    /**
+     * 计算ProjectTeam表有几个数据
+     * @return
+     */
+    List<Long> countAllProjectTeam();
 }

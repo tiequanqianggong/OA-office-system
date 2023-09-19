@@ -19,5 +19,6 @@ public  class ProjectPageQueryDTO {
     private String projectName;//项目名称(可选）
     private String projectType;//项目所属类别(可选）
     private String projectPrincipal;//项目负责人(可选）
+    private int    projectPriority;//项目优先级 1低/2中/3高
     private String projectDepartment;//项目所属部门(可选）
 }

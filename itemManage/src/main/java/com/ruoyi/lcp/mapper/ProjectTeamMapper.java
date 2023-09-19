@@ -47,5 +47,14 @@ public interface ProjectTeamMapper {
 
     int AddProjectTeam(ProjectTeam projectTeam);
 
+    /**
+     * 修改project表的自增id序列      修改表自增序列的起始值
+     */
+    void update();
 
+    /**
+     * 计算ProjectTeam表有几个数据
+     * @return
+     */
+    List<Long> countAllProjectTeam();
 }

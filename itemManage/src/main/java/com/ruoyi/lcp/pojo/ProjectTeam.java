@@ -21,9 +21,6 @@ import java.time.LocalDateTime;
 @TableName("project_team")
 @ApiModel("ProjectTeam")
 public class ProjectTeam  implements Serializable {
-    @ApiParam(value = "项目成员表id", name = "Id", required = false)
-    @ApiModelProperty(value = "项目成员表id(不需要，自增)")
-    private Long Id; // 项目成员表id(不需要，自增)
 
     @ApiParam(value = "关联的项目id", name = "projectId")
     @ApiModelProperty(value = "关联的项目id")

@@ -21,9 +21,6 @@ import java.time.LocalDate;
 @Builder
 @ApiModel("Project")
 public class Project implements Serializable {
-    @ApiParam(value = "项目表id", name = "Id", required = false)
-    @ApiModelProperty(value = "项目表id")
-    private Long Id; // 项目表id
 
     @ApiParam(value = "项目id", name = "projectId")
     @ApiModelProperty(value = "项目id")
@@ -97,4 +94,5 @@ public class Project implements Serializable {
     @ApiParam(value = "逻辑删除 默认值为0/存在   1/不存在", name = "projectDelFlag")
     @ApiModelProperty(value = "逻辑删除 默认值为0/存在   1/不存在")
     private String projectDelFlag = "0"; // 逻辑删除 默认值为0/存在   1/不存在
+
 }

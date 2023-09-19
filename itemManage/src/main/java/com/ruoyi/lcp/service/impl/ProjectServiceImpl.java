@@ -1,6 +1,8 @@
 package com.ruoyi.lcp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.lcp.constant.RedisConstants;
 import com.ruoyi.lcp.mapper.ProjectMapper;
@@ -10,8 +12,10 @@ import com.ruoyi.lcp.pojo.dto.ProjectUpdateDTO;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.core.redis.RedisCache;
-import com.ruoyi.lcp.pojo.vo.ProjectVO;
 import com.ruoyi.lcp.service.IProjectService;
+import com.ruoyi.lcp.util.PageUtil;
+import com.ruoyi.lcp.util.RedisU;
+import com.ruoyi.lcp.util.SortUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
@@ -20,12 +24,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
-import static com.ruoyi.common.utils.PageUtils.startPage;
 import static com.ruoyi.lcp.constant.RedissonConstants.ReadLock;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -39,12 +44,15 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
 
     @Resource
     private RedissonClient redissonClient;
+    @Resource
+    private RedisU redisU;
 
     /**
      * 可用常量 Key
      */
     String projectKey= RedisConstants.PROJECT_MANAGE_KEY;
     String projectNullKey= RedisConstants.PROJECT_MANAGE_NULL_KEY;
+
     /**
      * 项目查询，（可选）项目id、项目状态、项目名称、项目所属类别、项目负责人、项目修改人、项目所属部门        且可分页
      * @param projectPageQueryDTO
@@ -57,53 +65,83 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
         RLock readLock=rReadWriteLock.readLock();
        try {
            readLock.lock();
-           PageDomain pageDomain = TableSupport.buildPageRequestNoDefault();
-           if(pageDomain.getPageNum()!=null&& pageDomain.getPageSize()!=null){
-               //若依分页
-               startPage();
-               //如果有分页参数，则走数据库进行查询
-               return projectMapper.pageQuery(projectPageQueryDTO);
-           }
-           //     如果缓存不为空              且不是条件查询
+
+           PageDomain pageDomain = TableSupport.buildPageRequest();
+           Integer pageNum=pageDomain.getPageNum();
+           Integer pageSize=pageDomain.getPageSize();
+//           if(pageDomain.getPageNum()!=null&& pageDomain.getPageSize()!=null){
+//               //若依分页
+//               startPage();
+//               //如果有分页参数，则走数据库进行查询
+//               return projectMapper.pageQuery(projectPageQueryDTO);
+//           }
+
+           //     如果缓存不为空       有分页参数       且不是条件查询
            //     从缓存中获取数据
-           if (redisCache.hasKey(projectKey)&& projectPageQueryDTO.equals(null)){
+           if (redisCache.hasKey(projectKey)&& projectPageQueryDTO==null&&pageNum!=null&&pageSize!=null){
 
-               return  redisCache.getCacheList(projectKey);
-
+               /**
+                * 通过读取若依获取的分页参数， 根据分页算法获取redis中的数据，     不完善：
+                */
+               // 获取符合模式为 "project_manage:CACHE_Project*" 的哈希表
+               Map<String, String> hashData = redisCache.getCacheMap(projectKey);
+               List<Project> projectList=redisU.getDataFromRedis(pageNum,pageSize,projectKey,hashData,Project.class);
+               return projectList;
            }
            //从数据库查询
            List<Project> projects = projectMapper.pageQuery(projectPageQueryDTO);
 
-           if (extracted(projectPageQueryDTO, projectKey, projectNullKey, projects))
+           if (extracted(projectPageQueryDTO, projectKey, projectNullKey, projects)) {
                return redisCache.getCacheList(projectNullKey);
-           //返回数据库数据
-           return  projects;
+           }
 
+           //如果不是条件查询    通过分页工具将集合进行分页
+           if (projectPageQueryDTO==null) {
+               PageUtil<Project> pageUtil = new PageUtil<>(pageNum, pageSize, projects);
+
+           return  pageUtil.getPageList();
+           }
+           return projects;
        }finally {
            readLock.unlock();
        }
 
     }
-
     /**
-     * 查询数据库中该条数据是否被逻辑删除
+     * 查询数据库中是否有同名的项目
      * @param projectPageQueryDTO
      * @return
      */
     @Override
-    @Transactional
-    public Project selectDelFlag(ProjectPageQueryDTO projectPageQueryDTO) {
+    public List<Project> QueryProjectByProjectName(ProjectPageQueryDTO projectPageQueryDTO) {
         RReadWriteLock rReadWriteLock = redissonClient.getReadWriteLock( ReadLock+ SecurityUtils.getUserId());
         RLock readLock=rReadWriteLock.readLock();
         try {
             readLock.lock();
-            return projectMapper.selectDelFlag(projectPageQueryDTO);
+           return projectMapper.QueryProjectByProjectName(projectPageQueryDTO);
         }finally {
             readLock.unlock();
         }
 
     }
-
+    /**
+     * 查询数据库中该条数据是否被逻辑删除
+     *
+     * @param projectName
+     * @return
+     */
+    @Override
+    public Project selectDelFlag(String projectName) {
+        RReadWriteLock rReadWriteLock = redissonClient.getReadWriteLock( ReadLock+ SecurityUtils.getUserId());
+        RLock readLock=rReadWriteLock.readLock();
+        try {
+            readLock.lock();
+            Project project= projectMapper.selectDelFlag(projectName);
+            return project;
+        }finally {
+            readLock.unlock();
+        }
+    }
 
     /**
      * 项目删除  逻辑删除 将字段 project_del_flag设为1     0存在   1不存在
@@ -157,6 +195,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
     }
 
     @Override
+    @Transactional
     public int AddProject(Project project) {
         RReadWriteLock rReadWriteLock = redissonClient.getReadWriteLock( ReadLock+ SecurityUtils.getUserId());
         RLock writeLock=rReadWriteLock.writeLock();
@@ -164,15 +203,29 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
             writeLock.lock();
             //添加项目时，增加创建时间
             project.setProjectCreateTime(LocalDate.now());
+            projectMapper.update();
             int rows=projectMapper.AddProject(project);
-            Long id=projectMapper.selectIdByProjectId(project.getProjectId());
-            projectMapper.AddId(id);
+            //如果缓存存在，删除缓存
+            if (redisCache.hasKey(projectKey)){
+                redisCache.deleteObject(projectKey);
+            }
             return rows;
         }finally {
             writeLock.unlock();
         }
 
     }
+
+
+//    /**
+//     * 根据project 修改projectId
+//     *
+//     * @param project
+//     */
+//    @Override
+//    public void UpdateProjectId(Project project) {
+//        projectMapper.UpdateProjectId(project);
+//    }
 
 
     /**
@@ -201,10 +254,24 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
             return true;
         }
         //当Redis中没有写入过数据，且不是条件查询时写入Redis，
-        if (!redisCache.hasKey(projectKey)&& projectPageQueryDTO.equals(null)) {
-            redisCache.setCacheList(projectKey, projects);
+        if (!redisCache.hasKey(projectKey)&& ObjectUtils.isEmpty(projectPageQueryDTO)) {
+            for (Project project:projects) {
+                /**
+                 * 采用Redis Hash存储 List<Project> 对象，根据自增id作为hashkey存入Redis
+                 */
+                redisCache.setCacheMapValue(projectKey,project.getProjectId().toString()+System.currentTimeMillis(),project);
+            }
             redisCache.expire(projectKey, RedisConstants.RedisTTL, MINUTES);
         }
         return false;
+    }
+
+    /**
+     * 计算表中有几条数据
+     * @return
+     */
+    @Override
+    public List<Long> countAllProject(){
+        return projectMapper.countAllProject();
     }
 }
