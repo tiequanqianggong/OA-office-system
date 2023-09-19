@@ -96,7 +96,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
            }
 
            //如果不是条件查询    通过分页工具将集合进行分页
-           if (projectPageQueryDTO==null) {
+           if (projectPageQueryDTO==null&&pageNum!=null&&pageSize!=null) {
                PageUtil<Project> pageUtil = new PageUtil<>(pageNum, pageSize, projects);
 
            return  pageUtil.getPageList();
