@@ -9,7 +9,7 @@
         <result property="projectId" column="project_id" />
         <result property="teamName" column="team_name" />
         <result property="teamStatus" column="team_status" />
-        <result property="teamResponsibility" column="team_responsibility" />
+        <result property="modelId" column="model_id" />
         <result property="teamRole" column="team_role" />
         <result property="teamCreator" column="team_creator" />
         <result property="teamAuthority" column="team_authority" />
@@ -19,14 +19,14 @@
     </resultMap>
 
     <insert id="AddProjectTeam" parameterType="com.ruoyi.lcp.pojo.ProjectTeam">
-        INSERT INTO project_team (project_id, team_id, team_name, team_status, team_responsibility,
+        INSERT INTO project_team (project_id, team_id, team_name, team_status, model_id,
                                   team_role, team_creator, team_authority, team_starttime, team_createtime, team_updatetime)
         VALUES (
                    #{projectId},
                    #{teamId},
                    #{teamName},
                    #{teamStatus},
-                   #{teamResponsibility},
+                   #{modelId},
                    #{teamRole},
                    #{teamCreator},
                    #{teamAuthority},
@@ -41,7 +41,7 @@
             <if test="projectId != null and projectId != 0">project_id = #{projectId},</if>
             <if test="teamName != null and teamName != ''">team_name = #{teamName}, </if>
             <if test="teamStatus != null and teamStatus !=0">project_status = #{teamStatus}, </if>
-            <if test="teamResponsibility != null and teamResponsibility != ''">team_responsibility = #{teamResponsibility},</if>
+            <if test="modelId != null and modelId != ''">model_id = #{modelId},</if>
             <if test="teamRole != null and teamRole != ''">team_role = #{teamRole},</if>
             <if test="teamCreator != null and teamCreator != ''">team_creator = #{teamCreator},</if>
             <if test="teamAuthority != null and teamAuthority != 0">team_authority = #{teamAuthority},</if>
@@ -76,8 +76,8 @@
             <if test="teamRole != null and teamRole != ''">
                 AND team_role = #{teamRole}
             </if>
-            <if test="teamResponsibility != null and teamResponsibility != ''">
-                AND team_responsibility = #{teamResponsibility}
+            <if test="modelId != null and modelId != ''">
+                AND model_id = #{teamResponsibility}
             </if>
         </where>
         ORDER BY project_id ASC

@@ -38,9 +38,9 @@ public class ProjectTeam  implements Serializable {
     @ApiModelProperty(value = "项目成员状态 1在岗/2离职/3休假")
     private int teamStatus; // 项目成员状态 1在岗/2离职/3休假
 
-    @ApiParam(value = "项目成员责任描述，分配的模块", name = "teamResponsibility")
-    @ApiModelProperty(value = "项目成员责任描述 分配的模块")
-    private String teamResponsibility; // 项目成员责任描述 分配的模块
+    @ApiParam(value = "项目模块id 分配的模块", name = "modelId")
+    @ApiModelProperty(value = "项目模块id 分配的模块")
+    private Integer modelId; // 模块表id 分配的模块  项目管理/测试用例.....
 
     @ApiParam(value = "项目成员角色，例如开发、测试等", name = "teamRole")
     @ApiModelProperty(value = "项目成员角色 开发/测试....等等")
