@@ -2,12 +2,16 @@ package com.ruoyi.lcp.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.lcp.annotation.Percentage;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ProjectUpdateDTO {
     private Long projectId;//项目id(必须)

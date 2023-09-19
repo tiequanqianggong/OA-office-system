@@ -4,8 +4,7 @@
 <mapper namespace="com.ruoyi.lcp.mapper.ProjectMapper">
 
     <resultMap id="ProjectResult" type="com.ruoyi.lcp.pojo.Project">
-        <id property="id" column="id"/>
-        <result property="projectId" column="project_id"/>
+        <id property="projectId" column="project_id"/>
         <result property="projectName" column="project_name"/>
         <result property="projectType" column="project_type"/>
         <result property="projectStatus" column="project_status"/>
@@ -48,10 +47,6 @@
                    #{projectDelFlag}
                )
     </insert>
-    <insert id="AddId">
-        INSERT INTO project (project_id)
-        VALUES (#{id})
-    </insert>
 
 
     <update id="UpdateProject" parameterType="com.ruoyi.lcp.pojo.Project">
@@ -76,6 +71,31 @@
         </set>
         where project_id = #{projectId}
     </update>
+    <update id="update" >
+        <!-- 修改表自增序列的起始值 -->
+        ALTER TABLE project AUTO_INCREMENT = 1;
+    </update>
+    <!--<update id="UpdateProjectId">-->
+    <!--    update project set id=#{Id}-->
+    <!--    WHERE 1=1 &lt;!&ndash; 使用 1=1 作为起始条件，便于后续动态添加其他条件 &ndash;&gt;-->
+    <!--    <if test="projectId != null">AND project_id = #{projectId}</if>-->
+    <!--    <if test="projectName != null">AND project_name = #{projectName}</if>-->
+    <!--    <if test="projectType != null">AND project_type = #{projectType}</if>-->
+    <!--    <if test="project_status != null">AND project_status = #{project_status}</if>-->
+    <!--    <if test="projectMaterial != null">AND project_material = #{projectMaterial}</if>-->
+    <!--    <if test="projectDescription != null">AND project_description = #{projectDescription}</if>-->
+    <!--    <if test="projectPrincipal != null">AND project_principal = #{projectPrincipal}</if>-->
+    <!--    <if test="projectCreateTime != null">AND project_createtime = #{projectCreateTime}</if>-->
+    <!--    <if test="projectStartTime != null">AND project_starttime = #{projectStartTime}</if>-->
+    <!--    <if test="projectUpdateTime != null">AND project_updatetime = #{projectUpdateTime}</if>-->
+    <!--    <if test="projectTeam != null">AND project_team = #{projectTeam}</if>-->
+    <!--    <if test="projectPriority != null">AND project_priority = #{projectPriority}</if>-->
+    <!--    <if test="projectType != null">AND project_type = #{projectType}</if>-->
+    <!--    <if test="projectProgress != null">AND project_progress = #{projectProgress}</if>-->
+    <!--    <if test="projectBudget != null">AND project_budget = #{projectBudget}</if>-->
+    <!--    <if test="projectDepartment != null">AND project_department = #{projectDepartment}</if>-->
+    <!--    &lt;!&ndash; 添加更多的条件，根据需要 &ndash;&gt;-->
+    <!--</update>-->
 
 
     <delete id="delFlag">
@@ -93,6 +113,9 @@
             <if test="projectPrincipal!= null and projectPrincipal != ''">
                 and project_principal  = #{projectPrincipal}
             </if>
+            <if test="projectPriority!= null and projectPriority !=0">
+                and project_priority  = #{projectPriority}
+            </if>
             <if test="projectType!= null and projectType != ''">
                 and project_type  = #{projectType}
             </if>
@@ -109,40 +132,28 @@
         </where>
         order by project_id  asc , project_createtime desc
     </select>
-    <select id="selectDelFlag" resultType="com.ruoyi.lcp.pojo.Project">
-        SELECT project_name,project_del_flag FROM project
+
+
+
+
+
+    <select id="QueryProjectByProjectName" resultMap="ProjectResult">
+        select * from project
         <where>
-            <if test="projectDepartment!= null and projectDepartment != ''">
-                and project_department  = #{projectDepartment}
-            </if>
-            <if test="projectPrincipal!= null and projectPrincipal != ''">
-                and project_principal  = #{projectPrincipal}
-            </if>
-            <if test="projectType!= null and projectType != ''">
-                and project_type  = #{projectType}
-            </if>
             <if test="projectName!= null and projectName != ''">
-                and project_name  like concat('%',#{projectName},'%')
+                and project_name =#{projectName}
             </if>
-            <if test="projectStatus != null and projectStatus!= 0">
-                and project_status = #{projectStatus}
-            </if>
-            <if test="projectId != null and projectId != 0">
-                and project_id = #{projectId}
-            </if>
-            and project_del_flag = '1'
-         </where>
-    </select>
-
-
-    <select id="selectIdByProjectId" resultType="java.lang.Long">
-        SELECT id FROM project
-        <where>
-           <if test="projectId != null and projectId != 0">
-            and project_id = #{projectId}
-           </if>
             and project_del_flag = '0'
         </where>
+        order by project_id  asc , project_createtime desc
+    </select>
+    <select id="selectDelFlag" resultMap="ProjectResult">
+        SELECT * FROM project
+        WHERE project_name = #{projectName}
+          AND project_del_flag = '1'
+    </select>
+    <select id="countAllProject" resultType="java.lang.Long">
+        SELECT project_id FROM project where project_del_flag = '0'
     </select>
 
 

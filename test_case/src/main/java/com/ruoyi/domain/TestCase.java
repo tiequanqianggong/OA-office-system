@@ -81,6 +81,21 @@ public class TestCase extends BaseEntity
     @Excel(name = "用例步骤")
     private List<TestCaseStep> testCaseSteps;
 
+    /**
+     * 用例结果：忽略、未执行、通过、阻塞、失败
+     */
+    @ApiModelProperty(value = "用例结果", example = "通过")
+    @Excel(name = "用例结果")
+    private String caseResult;
+
+    public String getCaseResult() {
+        return caseResult;
+    }
+
+    public void setCaseResult(String caseResult) {
+        this.caseResult = caseResult;
+    }
+
     public List<TestCaseStep> getTestCaseSteps() {
         return testCaseSteps;
     }
@@ -204,6 +219,7 @@ public class TestCase extends BaseEntity
                 ", keywords='" + keywords + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", testCaseSteps=" + testCaseSteps +
+                ", caseResult='" + caseResult + '\'' +
                 '}';
     }
 }

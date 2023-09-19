@@ -2,9 +2,13 @@ package com.ruoyi.lcp.service.impl;
 
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageSerializable;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.lcp.constant.RedisConstants;
 import com.ruoyi.lcp.mapper.ProjectTeamMapper;
+import com.ruoyi.lcp.pojo.Project;
 import com.ruoyi.lcp.pojo.dto.ProjectTeamAddDTO;
 import com.ruoyi.lcp.pojo.dto.ProjectTeamDTO;
 import com.ruoyi.lcp.pojo.dto.ProjectTeamUpdateDTO;
@@ -14,6 +18,8 @@ import com.ruoyi.common.core.redis.RedisCache;
 
 import com.ruoyi.lcp.pojo.ProjectTeam;
 import com.ruoyi.lcp.service.IProjectTeamService;
+import com.ruoyi.lcp.util.PageUtil;
+import com.ruoyi.lcp.util.RedisU;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
@@ -22,10 +28,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.ruoyi.common.utils.PageUtils.startPage;
 import static com.ruoyi.lcp.constant.RedissonConstants.ReadLock;
@@ -42,6 +51,10 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
 
     @Resource
     private RedissonClient redissonClient;
+    @Resource
+    private RedisU redisU;
+
+
     /**
      * 可用常量Key
      */
@@ -58,19 +71,29 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
         RLock readLock=rReadWriteLock.readLock();
         try {
             readLock.lock();
+
             PageDomain pageDomain = TableSupport.buildPageRequestNoDefault();
-            if(pageDomain.getPageNum()!=null&& pageDomain.getPageSize()!=null){
-                //若依分页
-                startPage();
-                //如果有分页参数，则走数据库进行查询
-                return projectTeamMapper.pageQuery(projectTeamDTO);
-            }
+            Integer pageNum=pageDomain.getPageNum();
+            Integer pageSize=pageDomain.getPageSize();
+//            if(pageDomain.getPageNum()!=null&& pageDomain.getPageSize()!=null){
+//                //若依分页
+//                startPage();
+//                //如果有分页参数，则走数据库进行查询
+//                return projectTeamMapper.pageQuery(projectTeamDTO);
+//            }
+
             //     如果缓存不为空              且不是条件查询
             //     从缓存中获取数据
-            if (redisCache.hasKey(projectTeamKey)&& projectTeamDTO.equals(null)){
+            if (redisCache.hasKey(projectTeamKey)&& projectTeamDTO==null&&pageNum!=null&&pageSize!=null){
 
-                return redisCache.getCacheList(projectTeamKey);
+                /**
+                 * 通过读取若依获取的分页参数， 根据分页算法获取redis中的数据，     不完善：
+                 */
 
+                // 获取符合模式为 "project_manage:CACHE_Project*" 的哈希表
+                Map<String, String> hashData = redisCache.getCacheMap(projectTeamKey);
+                List<ProjectTeam> projectTeamList=redisU.getDataFromRedis(pageNum,pageSize,projectTeamKey,hashData,ProjectTeam.class);
+                return projectTeamList;
             }
 
 
@@ -78,8 +101,15 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
             List<ProjectTeam> projectTeams=projectTeamMapper.pageQuery(projectTeamDTO);
 
 
-            if (extracted(projectTeamDTO, projectTeamKey, projectTeamNullKey, projectTeams))
+            if (extracted(projectTeamDTO, projectTeamKey, projectTeamNullKey, projectTeams)) {
                 return redisCache.getCacheList(projectTeamNullKey);
+            }
+
+            //如果不是条件查询          通过分页工具将集合进行分页
+            if (projectTeamDTO==null) {
+                PageUtil<ProjectTeam> pageUtil=new PageUtil<>(pageNum,pageSize,projectTeams);
+                return  pageUtil.getPageList();
+            }
             return projectTeams ;
         }finally {
             readLock.unlock();
@@ -167,13 +197,19 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
             writeLock.lock();
             //设置项目成员创建时间
             projectTeam.setTeamCreateTime(LocalDate.now());
+            projectTeamMapper.update();
             int rows=projectTeamMapper.AddProjectTeam(projectTeam);
+            if (redisCache.hasKey(projectTeamKey)){
+                redisCache.deleteObject(projectTeamKey);
+            }
             return rows;
         }finally {
             writeLock.unlock();
         }
 
     }
+
+
 
 
     /**
@@ -203,10 +239,25 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
         }
 
         //此处为：数据库不为空则 将数据写入Redis   返回数据库数据
-        if (!redisCache.hasKey(projectTeamKey)&& projectTeamDTO.equals(null)) {
-            redisCache.setCacheList(projectTeamKey, projectTeams);
-            redisCache.expire(projectTeamKey, RedisConstants.RedisTTL,MINUTES);
+        if (!redisCache.hasKey(projectTeamKey)&& ObjectUtils.isEmpty(projectTeamDTO)) {
+            for (ProjectTeam projectTeam:projectTeams) {
+                /**
+                 * 采用Redis Hash存储 List<ProjectTeam> 对象，根据自增id作为hashkey存入Redis
+                 */
+                redisCache.setCacheMapValue(projectTeamKey,projectTeam.getTeamId().toString(),projectTeam);
+            }
+            redisCache.expire(projectTeamKey, RedisConstants.RedisTTL, MINUTES);
         }
         return false;
+    }
+
+
+    /**
+     * 计算ProjectTeam表有几个数据
+     * @return
+     */
+    @Override
+    public List<Long> countAllProjectTeam() {
+        return projectTeamMapper.countAllProjectTeam();
     }
 }

@@ -5,9 +5,8 @@
 
     <!-- 定义 ProjectTeam 实体类的 ResultMap -->
     <resultMap id="ProjectTeamResultMap" type="com.ruoyi.lcp.pojo.ProjectTeam">
-        <id property="id" column="id" />
+        <id property="teamId" column="team_id" />
         <result property="projectId" column="project_id" />
-        <result property="teamId" column="team_id" />
         <result property="teamName" column="team_name" />
         <result property="teamStatus" column="team_status" />
         <result property="teamResponsibility" column="team_responsibility" />
@@ -53,6 +52,10 @@
         </set>
         WHERE team_id = #{teamId}
     </update>
+    <update id="update" >
+        <!-- 修改表自增序列的起始值 -->
+        ALTER TABLE project_team AUTO_INCREMENT = 1;
+    </update>
 
 
     <delete id="deleteByTeamId" parameterType="long" >
@@ -90,6 +93,9 @@
              </if>
          </where>
 
+    </select>
+    <select id="countAllProjectTeam" resultType="java.lang.Long">
+        SELECT team_id FROM project_team
     </select>
 
 </mapper>

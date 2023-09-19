@@ -15,14 +15,22 @@ public interface IProjectService extends IService<Project> {
      */
     List<Project> QueryProject(ProjectPageQueryDTO projectPageQueryDTO);
 
+    /**
+     * 查询数据库中是否有同名的项目
+     * @param projectPageQueryDTO
+     * @return
+     */
+    List<Project> QueryProjectByProjectName(ProjectPageQueryDTO projectPageQueryDTO);
+
 
 
     /**
      * 查询数据库中该条数据是否被逻辑删除
-     * @param projectPageQueryDTO
+     *
+     * @param projectName
      * @return
      */
-    Project  selectDelFlag(ProjectPageQueryDTO projectPageQueryDTO);
+    Project  selectDelFlag(String projectName);
 
 
     /**
@@ -45,4 +53,18 @@ public interface IProjectService extends IService<Project> {
      * @return
      */
     int AddProject(Project project);
+
+
+    /**
+     * 计算表中有几条数据
+     * @return
+     */
+     List<Long> countAllProject();
+
+//    /**
+//     * 根据project 修改projectId
+//     *
+//     * @param project
+//     */
+//    void UpdateProjectId(Project project);
 }

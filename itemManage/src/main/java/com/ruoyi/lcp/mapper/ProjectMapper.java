@@ -18,19 +18,12 @@ public interface ProjectMapper extends BaseMapper<Project> {
     public List<Project> pageQuery(ProjectPageQueryDTO projectPageQueryDTO);
 
     /**
-     * 根据projectId查询出项目表的自增id    在增加方法里调用
-     * @param projectId
-     * @return
-     */
-    Long selectIdByProjectId(Long projectId);
-
-    /**
      * 查询数据库中该条数据是否被逻辑删除
      *
-     * @param projectPageQueryDTO
+     * @param projectName
      * @return
      */
-    Project selectDelFlag(ProjectPageQueryDTO projectPageQueryDTO);
+    Project selectDelFlag(String projectName);
 
     /**
      * 项目删除  逻辑删除 将字段 project_del_flag设为1     0存在   1不存在
@@ -53,6 +46,18 @@ public interface ProjectMapper extends BaseMapper<Project> {
      */
     int AddProject(Project project);
 
+    /**
+     * 修改project表的自增id序列      修改表自增序列的起始值
+     */
+    void update();
 
-    void AddId(Long id);
+    List<Project> QueryProjectByProjectName(ProjectPageQueryDTO projectPageQueryDTO);
+
+    List<Long> countAllProject();
+//    /**
+//     * 根据project 修改projectId
+//     *
+//     * @param project
+//     */
+//    void UpdateProjectId(Project project);
 }

@@ -1,6 +1,9 @@
 package com.ruoyi.lcp.controller;
 
 
+import com.ruoyi.common.constant.HttpStatus;
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.lcp.pojo.Project;
 import com.ruoyi.lcp.pojo.dto.ProjectPageQueryDTO;
 import com.ruoyi.lcp.pojo.dto.ProjectTeamAddDTO;
@@ -49,11 +52,9 @@ public class ProjectTeamController extends BaseController {
     @ApiOperation("项目团队管理分页查询")
     @PreAuthorize("@ss.hasPermi('system:projectteam:query')")
     @Log(title = "项目团队管理", businessType = BusinessType.OTHER)
-    @GetMapping("/query")
+    @PostMapping("/query")
     @ApiImplicitParam(name = "QueryProjectTeam",value = "分页查询/条件查询")
     public TableDataInfo QueryProjectTeam(@RequestBody(required = false) ProjectTeamDTO projectTeamDTO){
-        //若依分页
-        startPage();
         List<ProjectTeam> projectTeamList =iProjectTeamService.QueryProjectTeam(projectTeamDTO);
         //创建Vo集合  在循环中接收ProjectTeam
         List<ProjectTeamVO> projectTeamVOList = new ArrayList<>();
@@ -73,8 +74,15 @@ public class ProjectTeamController extends BaseController {
             projectTeamVOList.add(projectTeamVO);
         }
 
+        //手动封装若依框架中提供的TableDataInfo
+        TableDataInfo tableDataInfo=new TableDataInfo();
+        tableDataInfo.setCode(HttpStatus.SUCCESS);
+        tableDataInfo.setMsg("查询成功");
+        tableDataInfo.setRows(projectTeamVOList);
+        tableDataInfo.setTotal(iProjectTeamService.countAllProjectTeam().size());
+
         //将VO传给前端
-        return getDataTable(projectTeamVOList);
+        return tableDataInfo;
     }
 
     /**
@@ -139,13 +147,12 @@ public class ProjectTeamController extends BaseController {
                return error("新增失败，"+projectTeam_dateBase.getTeamName()+"该成员已存在");
            }
        }
-
         //判断数据库中是否存在该成员所在的项目
         ProjectPageQueryDTO projectPageQueryDTO=new ProjectPageQueryDTO();
         projectPageQueryDTO.setProjectId(projectTeam.getProjectId());
         List<Project> projects=iProjectService.QueryProject(projectPageQueryDTO);
         if (projects.get(0).equals(null)){
-            return error("新增失败，该成员所在项目不存在");
+            return error("新增失败，该项目还未创建");
         }
         return toAjax(iProjectTeamService.AddProjectTeam(projectTeam));
     }
