@@ -5,14 +5,22 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.redis.RedisCache;
+import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.bean.BeanValidators;
+import com.ruoyi.system.mapper.*;
+import com.ruoyi.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.defects.mapper.DefectsMapper;
 import com.ruoyi.defects.domain.Defects;
 import com.ruoyi.defects.service.IDefectsService;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.Validator;
 
 import static com.ruoyi.defects.constants.CacheConstants.*;
 
@@ -31,8 +39,13 @@ public class DefectsServiceImpl implements IDefectsService
 
     @Autowired
     private RedisCache redisCache;
+
+
+
+
+
     /**
-     * 查询缺陷管理
+     * 根据id查询
      * 
      * @param defectId 缺陷管理主键
      * @return 缺陷管理
@@ -58,7 +71,7 @@ public class DefectsServiceImpl implements IDefectsService
 
 
     /**
-     * 查询缺陷管理列表
+     * 动态查询
      * 
      * @param defects 缺陷管理
      * @return 缺陷管理
@@ -71,15 +84,17 @@ public class DefectsServiceImpl implements IDefectsService
         List<Defects> cacheList = redisCache.getCacheList(REDIS_KEY_LIST_BEFORE);
 //        判断是否存在
         if(StringUtils.isNotEmpty(cacheList)){
+            List<Defects> defects1 = getDefects(defects);
 //        存在直接返回
-            return cacheList;
+            return defects1;
         }
 //        不存在 查询数据库并将数据存入缓存
         return getDefects(defects);
+
     }
 
     /**
-     * 新增缺陷管理
+     * 添加缺陷管理
      * 
      * @param defects 缺陷管理
      * @return 结果
@@ -143,6 +158,7 @@ public class DefectsServiceImpl implements IDefectsService
         boolean b1 = redisCache.deleteObject(REDIS_KEY_LIST_BEFORE);
         return i;
     }
+
 
     /*/**
      * TODO     查询数据库并写入redis，最后返回

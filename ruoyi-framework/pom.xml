@@ -59,11 +59,11 @@
             <artifactId>ruoyi-system</artifactId>
         </dependency>
 
-        <!-- 缺项管理-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-defects</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; 缺项管理&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.ruoyi</groupId>-->
+<!--            <artifactId>ruoyi-defects</artifactId>-->
+<!--        </dependency>-->
 
     </dependencies>
 
