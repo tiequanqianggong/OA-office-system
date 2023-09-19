@@ -66,7 +66,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
        try {
            readLock.lock();
 
-           PageDomain pageDomain = TableSupport.buildPageRequest();
+           PageDomain pageDomain = TableSupport.buildPageRequestNoDefault();
            Integer pageNum=pageDomain.getPageNum();
            Integer pageSize=pageDomain.getPageSize();
 //           if(pageDomain.getPageNum()!=null&& pageDomain.getPageSize()!=null){
