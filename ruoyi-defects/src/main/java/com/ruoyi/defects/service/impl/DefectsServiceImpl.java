@@ -158,6 +158,11 @@ public class DefectsServiceImpl implements IDefectsService
         boolean b1 = redisCache.deleteObject(REDIS_KEY_LIST_BEFORE);
         return i;
     }
+    //查询最大id
+    @Override
+    public long selectMaxId() {
+        return defectsMapper.selectMaxId();
+    }
 
 
     /*/**

@@ -58,4 +58,6 @@ public interface DefectsMapper
      * @return 结果
      */
     public int deleteDefectsByDefectIds(Long[] defectIds);
+
+    public long selectMaxId();
 }

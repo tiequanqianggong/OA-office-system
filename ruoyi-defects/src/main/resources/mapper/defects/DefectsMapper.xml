@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and d.status = #{status}</if>
             <if test="detectedBy != null  and detectedBy != ''"> and d.detected_by = #{detectedBy}</if>
             <if test="detectedDate != null "> and d.detected_date = #{detectedDate}</if>
-<!--            <if test="project_team != null,project_team.teamName != null  and project_team.teamName != ''"> and d.team_name = #{teamName}</if>-->
+<!--            <if test="teamName != null  and teamName != ''"> and pt.team_name = #{teamName}</if>-->
             <if test="teamId != null  and teamId != ''"> and pt.team_id = #{teamId}</if>
             <if test="priority != null  and priority != ''"> and d.priority = #{priority}</if>
         </where>
@@ -117,4 +117,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{defectId}
         </foreach>
     </delete>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        select defect_id from defects order by defect_id desc limit 1;
+    </select>
+
 </mapper>

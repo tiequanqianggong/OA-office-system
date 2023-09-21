@@ -61,6 +61,7 @@ public interface IDefectsService
      */
     public int deleteDefectsByDefectId(Long defectId);
 
-//    /*导入*/
-//    public String importDefects(List<Defects> defectsList, Boolean isUpdateSupport, String operName);
+
+    //查询最大id
+    public long selectMaxId();
 }

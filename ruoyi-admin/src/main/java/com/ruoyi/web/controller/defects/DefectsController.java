@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -173,6 +174,15 @@ public class DefectsController extends BaseController
     @ApiOperation("新增缺陷管理")
     public AjaxResult add(@RequestBody Defects defects)
     {
+
+        //生成 测试用例ID
+        Long caseId_uuid = defectsService.selectMaxId()+1;
+        if (caseId_uuid == null)
+            caseId_uuid = 1L;
+
+        System.err.println("maxID " + caseId_uuid);
+
+        defects.setDefectId(caseId_uuid);
         return toAjax(defectsService.insertDefects(defects));
     }
 
@@ -200,6 +210,9 @@ public class DefectsController extends BaseController
         return toAjax(defectsService.deleteDefectsByDefectIds(defectIds));
     }
 
+    /**
+     * 根据id删除缺陷管理
+     */
     @PreAuthorize("@ss.hasPermi('defects:defects:remove')")
     @Log(title = "缺陷管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/test/{defectId}")
@@ -208,6 +221,8 @@ public class DefectsController extends BaseController
     {
         return toAjax(defectsService.deleteDefectsByDefectId(defectId));
     }
+
+
 
 
 }
