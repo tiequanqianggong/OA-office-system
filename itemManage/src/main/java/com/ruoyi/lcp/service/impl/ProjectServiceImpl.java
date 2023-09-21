@@ -66,7 +66,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
        try {
            readLock.lock();
 
-           PageDomain pageDomain = TableSupport.buildPageRequestNoDefault();
+           PageDomain pageDomain = TableSupport.buildPageRequest();
            Integer pageNum=pageDomain.getPageNum();
            Integer pageSize=pageDomain.getPageSize();
 //           if(pageDomain.getPageNum()!=null&& pageDomain.getPageSize()!=null){
@@ -96,7 +96,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
            }
 
            //如果不是条件查询    通过分页工具将集合进行分页
-           if (projectPageQueryDTO==null&&pageNum!=null&&pageSize!=null) {
+           if (projectPageQueryDTO==null) {
                PageUtil<Project> pageUtil = new PageUtil<>(pageNum, pageSize, projects);
 
            return  pageUtil.getPageList();

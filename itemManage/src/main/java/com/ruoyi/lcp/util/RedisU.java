@@ -1,15 +1,21 @@
 package com.ruoyi.lcp.util;
 
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruoyi.common.core.redis.RedisCache;
+import com.ruoyi.lcp.pojo.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-
-
+/**
+ * @author ：于志强
+ * @date ：Created in 2019/9/4 16:27
+ * @description：redis工具类
+ */
 @Component
 public class RedisU {
     @Autowired

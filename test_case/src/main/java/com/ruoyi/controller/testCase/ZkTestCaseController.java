@@ -1,28 +1,18 @@
 package com.ruoyi.controller.testCase;
 
-import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.domain.TestCase;
 import com.ruoyi.domain.TestCaseStep;
 import com.ruoyi.service.ITestCaseService;
 import com.ruoyi.service.ITestCaseStepService;
-import com.ruoyi.utils.UUID;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -188,6 +178,26 @@ public class ZkTestCaseController extends BaseController {
     }
 
     /**
+     * 查询用例列表
+     */
+    @GetMapping("/list")
+    @ApiOperation("查询用例列表")
+    public TableDataInfo list(TestCase testCase)
+    {
+        startPage();
+        List<TestCase> list = testCaseService.selectTestCaseList(testCase);
+        //设置用例步骤、用例结果
+        for (TestCase aCase : list) {
+            TestCaseStep testCaseStep = new TestCaseStep();
+            testCaseStep.setTestCaseId(aCase.getId());
+            List<TestCaseStep> testCaseSteps = testCaseStepService.selectTestCaseStepList(testCaseStep);
+            aCase.setTestCaseSteps(testCaseSteps);
+            caseSetResult(aCase);
+        }
+        return getDataTable(list);
+    }
+
+    /**
      * 查询用例列表根据优先级排序
      * positive sequence: 正序
      * Reverse order    ：逆序
@@ -205,6 +215,16 @@ public class ZkTestCaseController extends BaseController {
                 return (int) (o1.getPriority()-o2.getPriority());
             }
         });
+
+        //设置用例步骤、用例结果
+        for (TestCase aCase : list) {
+            TestCaseStep testCaseStep = new TestCaseStep();
+            testCaseStep.setTestCaseId(aCase.getId());
+            List<TestCaseStep> testCaseSteps = testCaseStepService.selectTestCaseStepList(testCaseStep);
+            aCase.setTestCaseSteps(testCaseSteps);
+            caseSetResult(aCase);
+        }
+
         return getDataTable(list);
     }
 
@@ -221,8 +241,91 @@ public class ZkTestCaseController extends BaseController {
                 return -(int) (o1.getPriority()-o2.getPriority());
             }
         });
+
+        //设置用例步骤、用例结果
+        for (TestCase aCase : list) {
+            TestCaseStep testCaseStep = new TestCaseStep();
+            testCaseStep.setTestCaseId(aCase.getId());
+            List<TestCaseStep> testCaseSteps = testCaseStepService.selectTestCaseStepList(testCaseStep);
+            aCase.setTestCaseSteps(testCaseSteps);
+            caseSetResult(aCase);
+        }
+
         return getDataTable(list);
     }
+
+    /**
+     * 设置用例结果
+     *  忽略0、未执行1、通过2、阻塞3、失败4
+     *  true Or null
+     */
+    private void caseSetResult(TestCase testCase)
+    {
+        //没有用例步骤时
+        if (testCase.getTestCaseSteps() == null)
+            return;
+
+       Map<Integer, Boolean> map = new HashMap<>();
+
+        for (TestCaseStep testCaseStep : testCase.getTestCaseSteps()) {
+            if("忽略".equals(testCaseStep.getTestResult()))
+            {
+                map.put(0,true);
+            }
+            if("未执行".equals(testCaseStep.getTestResult()))
+            {
+                map.put(1,true);
+            }
+            if("通过".equals(testCaseStep.getTestResult()))
+            {
+                map.put(2,true);
+            }
+            if("阻塞".equals(testCaseStep.getTestResult()))
+            {
+                map.put(3,true);
+            }
+            if("失败".equals(testCaseStep.getTestResult()))
+            {
+                map.put(4,true);
+            }
+        }
+
+        for(int i=4; i>=0; i--)
+        {
+            if(map.get(i) != null)
+            {
+                switch (i){
+                        case 0:
+                        {
+                            testCase.setCaseResult("忽略");
+                            break;
+                        }
+                        case 1:
+                        {
+                            testCase.setCaseResult("未执行");
+                            break;
+                        }case 2:
+                        {
+                            testCase.setCaseResult("通过");
+                            break;
+                        }case 3:
+                        {
+                            testCase.setCaseResult("阻塞");
+                            break;
+                        }case 4:
+                        {
+                            testCase.setCaseResult("失败");
+                            break;
+                        }
+                }
+
+                return;
+            }
+        }
+
+    }
+
+
 
 //    /**
 //     * 根据项目ID查询用例 【x 重复了】
@@ -235,6 +338,5 @@ public class ZkTestCaseController extends BaseController {
 //        List<TestCase> list = testCaseService.selectTestCaseList(testCase);
 //        return getDataTable(list);
 //    }
-
 
 }

@@ -47,6 +47,7 @@ public class TestCaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('case:case:list')")
     @GetMapping("/list")
+    @ApiOperation("废弃 ：请调用/zk/list")
     public TableDataInfo list(TestCase testCase)
     {
         startPage();

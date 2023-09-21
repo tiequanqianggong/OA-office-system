@@ -106,7 +106,7 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
             }
 
             //如果不是条件查询          通过分页工具将集合进行分页
-            if (projectTeamDTO==null&&pageNum!=null&&pageSize!=null) {
+            if (projectTeamDTO==null) {
                 PageUtil<ProjectTeam> pageUtil=new PageUtil<>(pageNum,pageSize,projectTeams);
                 return  pageUtil.getPageList();
             }
