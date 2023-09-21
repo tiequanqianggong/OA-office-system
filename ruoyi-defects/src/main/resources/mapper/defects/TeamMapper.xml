@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.defects.mapper.TeamMapper">
+    <resultMap id="TeamResult" type="Team">
+        <id column="team_id" property="teamId"/>
+        <result column="team_name" property="teamName"/>
+    </resultMap>
+    <resultMap id="CaseIdAndProjectNameResult" type="CaseIdAndProjectName">
+        <result column="project_name" property="projectName"/>
+        <result column="id" property="id"/>
+    </resultMap>
+    <resultMap id="ModuleNameResult" type="Module">
+        <result column="model_name" property="modelName"/>
+    </resultMap>
+  <select id="selectTeamList"  resultMap="TeamResult">
+     SELECT team_id, team_name FROM project_team
+  </select>
+
+ <select id="selectCaseIdAndProjectName" resultMap="CaseIdAndProjectNameResult">
+     SELECT  p.project_name, tc.id FROM project p,test_case tc WHERE  (SELECT  item_id  FROM test_case  WHERE id = #{caseId}) =item_id=p.project_id
+ </select>
+    <select id="selectModuleName"   resultMap="ModuleNameResult">
+        SELECT model_name
+        FROM project_model
+        WHERE model_id= (SELECT  model_id FROM project_team WHERE project_id =(SELECT  item_id  FROM test_case  WHERE id = #{caseId}))
+    </select>
+</mapper>

@@ -18,37 +18,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="teamId"    column="team_id"    />
         <result property="priority"    column="priority"    />
         <result property="remark"    column="remark"    />
-<!--        <association property="projectTeam"   javaType="projectTeam" resultMap="com.ruoyi.defects.mapper.ProjectTeamMapper.ProjectTeamResult">-->
-
-<!--        </association>-->
+        <association property="team"  javaType="team">
+            <id column="team_id" property="teamId" />
+            <result column="team_name" property="teamName"/>
+        </association>
     </resultMap>
 
     <sql id="selectDefectsVo">
---         select d.*,pt.team_name from defects d  left join  project_team pt on d.team_id =pt.team_id
-           select defect_id, case_id, module_name,project_name,summary, description, severity, status, detected_by, detected_date, team_id,priority, remark from defects
+        SELECT pt.team_id,pt.team_name,d.defect_id,d.case_id,d.module_name,d.project_name,d.summary,d.description,d.severity,d.`status`,d.detected_by,d.detected_date,d.team_id,d.priority,d.remark
+        FROM project_team pt  JOIN defects d
+        ON pt.team_id =d.team_id
     </sql>
 
     <select id="selectDefectsList" parameterType="Defects" resultMap="DefectsResult">
         <include refid="selectDefectsVo"/>
         <where>
-            <if test="defectId != null "> and defect_id = #{defectId}</if>
-            <if test="caseId != null "> and case_id = #{caseId}</if>
-            <if test="moduleName != null  and moduleName != ''"> and module_name = #{moduleName}</if>
-            <if test="projectName != null  and projectName != ''"> and project_name = #{projectName}</if>
-            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
-            <if test="description != null  and description != ''"> and description = #{description}</if>
-            <if test="severity != null  and severity != ''"> and severity = #{severity}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
-            <if test="detectedBy != null  and detectedBy != ''"> and detected_by = #{detectedBy}</if>
-            <if test="detectedDate != null "> and detected_date = #{detectedDate}</if>
-            <if test="teamId != null  and teamId != ''"> and team_id = #{teamId}</if>
-            <if test="priority != null  and priority != ''"> and priority = #{priority}</if>
+            <if test="defectId != null "> and d.defect_id = #{defectId}</if>
+            <if test="caseId != null "> and d.case_id = #{caseId}</if>
+            <if test="moduleName != null  and moduleName != ''"> and d.module_name = #{moduleName}</if>
+            <if test="projectName != null  and projectName != ''"> and d.project_name = #{projectName}</if>
+            <if test="summary != null  and summary != ''"> and d.summary = #{summary}</if>
+            <if test="description != null  and description != ''"> and d.description = #{description}</if>
+            <if test="severity != null  and severity != ''"> and d.severity = #{severity}</if>
+            <if test="status != null  and status != ''"> and d.status = #{status}</if>
+            <if test="detectedBy != null  and detectedBy != ''"> and d.detected_by = #{detectedBy}</if>
+            <if test="detectedDate != null "> and d.detected_date = #{detectedDate}</if>
+<!--            <if test="project_team != null,project_team.teamName != null  and project_team.teamName != ''"> and d.team_name = #{teamName}</if>-->
+            <if test="teamId != null  and teamId != ''"> and pt.team_id = #{teamId}</if>
+            <if test="priority != null  and priority != ''"> and d.priority = #{priority}</if>
         </where>
     </select>
     
     <select id="selectDefectsByDefectId" parameterType="Long" resultMap="DefectsResult">
         <include refid="selectDefectsVo"/>
-        where defect_id = #{defectId}
+        where d.defect_id = #{defectId}
     </select>
         
     <insert id="insertDefects" parameterType="Defects">

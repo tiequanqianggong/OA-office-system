@@ -10,14 +10,19 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.defects.domain.CaseIdAndProjectName;
 import com.ruoyi.defects.domain.Defects;
+import com.ruoyi.defects.domain.Module;
+import com.ruoyi.defects.domain.Team;
 import com.ruoyi.defects.service.IDefectsService;
+import com.ruoyi.defects.service.ITeamService;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.web.PortResolverImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +42,8 @@ public class DefectsController extends BaseController
 {
     @Autowired
     private IDefectsService defectsService;
+    @Autowired
+    private ITeamService teamService;
 
     @Autowired
     private ISysUserService userService;
@@ -45,7 +52,7 @@ public class DefectsController extends BaseController
     private TokenService tokenService;
 
     /**
-     *查询
+     *动态查询缺陷信息
      */
     @PreAuthorize("@ss.hasPermi('defects:defects:list')")
     @GetMapping("/list")
@@ -54,6 +61,19 @@ public class DefectsController extends BaseController
     {
         startPage();
         List<Defects> list = defectsService.selectDefectsList(defects);
+        return getDataTable(list);
+    }
+
+    /**
+     *查询所有员工姓名
+     */
+    @PreAuthorize("@ss.hasPermi('defects:defects:list')")
+    @GetMapping("/teamList")
+    @ApiOperation("查询员工姓名")
+    public  TableDataInfo teamList()
+    {
+        startPage();
+        List<Team> list = teamService.selectTeamList();
         return getDataTable(list);
     }
 
@@ -72,33 +92,32 @@ public class DefectsController extends BaseController
     }
 
 
-//
+
 //    导入功能实现
-//    @Log(title = "缺陷管理", businessType = BusinessType.IMPORT)
-//    @PostMapping("/importDefectsData")
-//    @ApiOperation("导入缺陷管理列表")
-//    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
-//    {
-//        //1
-////        ExcelUtil<Defects> util = new ExcelUtil<Defects>(SysUser.class);
-////        List<Defects> defectsList = util.importExcel(file.getInputStream());
-////        String operName =  getUsername();
-////        String message = userService.importUser(defectsList, updateSupport, operName);
-////        return AjaxResult.success(message);
-////        2
-////        ExcelUtil<Defects> util = new ExcelUtil<Defects>(Defects.class);
-////        List<Defects> defectsList = util.importExcel(file.getInputStream());
-////        String operName =  getUsername();
-////        String message = userService.importUser(defectsList, updateSupport, operName);
-////        for (int i = 0; i < defectsList.size(); i++) {
-////            Defects defects=defectsList.get(i);
-////            defectsService.insertDefects(defects);
-////        }
-////        return AjaxResult.success(message);
-//
-////        return AjaxResult.success();
-//
-//    }
+    @Log(title = "缺陷管理", businessType = BusinessType.IMPORT)
+    @PostMapping("/importDefectsData")
+    @ApiOperation("导入缺陷管理列表")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file) throws Exception
+    {
+        //1
+//        ExcelUtil<Defects> util = new ExcelUtil<Defects>(SysUser.class);
+//        List<Defects> defectsList = util.importExcel(file.getInputStream());
+//        String operName =  getUsername();
+//        String message = userService.importUser(defectsList, updateSupport, operName);
+//        return AjaxResult.success(message);
+//        2
+        ExcelUtil<Defects> util = new ExcelUtil<Defects>(Defects.class);
+        List<Defects> defectsList = util.importExcel(file.getInputStream());
+        for (int i = 0; i < defectsList.size(); i++) {
+            Defects defects=defectsList.get(i);
+            defectsService.insertDefects(defects);
+        }
+//        return AjaxResult.success(message);
+
+        return AjaxResult.success();
+
+    }
     //下载模板
     @GetMapping("/importDefectsTemplate")
     @ApiOperation("导入下载模板")
@@ -121,7 +140,30 @@ public class DefectsController extends BaseController
         }
         return success(defects);
     }
+    /**
+     * 根据用例ID查询用例id和项目名称
+     */
+    @PreAuthorize("@ss.hasPermi('defects:defects:query')")
+    @GetMapping(value = "/caseId/{caseId}")
+    @ApiOperation("根据用例ID查询用例id和项目名称")
+    public AjaxResult getCaseIdAndProjectName(@PathVariable("caseId") Long caseId)
+    {
+        CaseIdAndProjectName caseIdAndProjectName = teamService.selectCaseIdAndProjectName(caseId);
+        return success(caseIdAndProjectName);
+    }
 
+
+    /**
+     * 根据用例ID查询模块名称
+     */
+    @PreAuthorize("@ss.hasPermi('defects:defects:query')")
+    @GetMapping(value = "/moduleName/{caseId}")
+    @ApiOperation("根据用例ID查询用例id和项目名称")
+    public AjaxResult getModuleName(@PathVariable("caseId") Long caseId)
+    {
+             Module module = teamService.selectModuleName(caseId);
+        return success(module);
+    }
     /**
      * 新增缺陷管理
      */

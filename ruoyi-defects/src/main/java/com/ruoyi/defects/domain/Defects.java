@@ -1,6 +1,8 @@
 package com.ruoyi.defects.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.lcp.pojo.vo.ProjectTeamVO;
 import io.swagger.annotations.ApiModelProperty;
@@ -73,101 +75,104 @@ public class Defects extends BaseEntity
     /** 分配给某成员 */
     @Excel(name = "分配给某成员")
     @ApiModelProperty("分配给某成员")
-    private String teamId;
+    private Long teamId;
 
     /** 优先级 */
     @Excel(name = "优先级")
     @ApiModelProperty("优先级")
     private String priority;
 
-//    private ProjectTeam projectTeam;
-//
-//    public ProjectTeam getProjectTeam() {
-//        return projectTeam;
-//    }
-//
-//    public void setProjectTeam(ProjectTeam projectTeam) {
-//        this.projectTeam = projectTeam;
-//    }
+    /** 成员对象 */
+    @Excel(name = "成员对象")
+    @ApiModelProperty("成员对象")
+    private Team team;
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     public void setDefectId(Long defectId)
     {
         this.defectId = defectId;
     }
 
-    public Long getDefectId() 
+    public Long getDefectId()
     {
         return defectId;
     }
-    public void setCaseId(Long caseId) 
+    public void setCaseId(Long caseId)
     {
         this.caseId = caseId;
     }
 
-    public Long getCaseId() 
+    public Long getCaseId()
     {
         return caseId;
     }
-    public void setSummary(String summary) 
+    public void setSummary(String summary)
     {
         this.summary = summary;
     }
 
-    public String getSummary() 
+    public String getSummary()
     {
         return summary;
     }
-    public void setDescription(String description) 
+    public void setDescription(String description)
     {
         this.description = description;
     }
 
-    public String getDescription() 
+    public String getDescription()
     {
         return description;
     }
-    public void setSeverity(String severity) 
+    public void setSeverity(String severity)
     {
         this.severity = severity;
     }
 
-    public String getSeverity() 
+    public String getSeverity()
     {
         return severity;
     }
-    public void setStatus(String status) 
+    public void setStatus(String status)
     {
         this.status = status;
     }
 
-    public String getStatus() 
+    public String getStatus()
     {
         return status;
     }
-    public void setDetectedBy(String detectedBy) 
+    public void setDetectedBy(String detectedBy)
     {
         this.detectedBy = detectedBy;
     }
 
-    public String getDetectedBy() 
+    public String getDetectedBy()
     {
         return detectedBy;
     }
-    public void setDetectedDate(Date detectedDate) 
+    public void setDetectedDate(Date detectedDate)
     {
         this.detectedDate = detectedDate;
     }
 
-    public Date getDetectedDate() 
+    public Date getDetectedDate()
     {
         return detectedDate;
     }
 
-    public String getTeamId() {
+    public Long getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(String teamId) {
+    public void setTeamId(Long teamId) {
         this.teamId = teamId;
     }
 
@@ -211,7 +216,7 @@ public class Defects extends BaseEntity
             .append("projectName",getProjectName())
             .append("priority",getPriority())
             .append("remark", getRemark())
-//            .append("ProjectTeam", getProjectTeam())
+            .append("Team",getTeam())
             .toString();
     }
 }
