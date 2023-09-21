@@ -1,6 +1,8 @@
 package com.ruoyi.defects.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.defects.domain.Defects;
 
 /**
@@ -58,4 +60,7 @@ public interface IDefectsService
      * @return 结果
      */
     public int deleteDefectsByDefectId(Long defectId);
+
+//    /*导入*/
+//    public String importDefects(List<Defects> defectsList, Boolean isUpdateSupport, String operName);
 }

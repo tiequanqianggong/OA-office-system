@@ -85,6 +85,8 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>test_case</artifactId>
         </dependency>
+
+
     </dependencies>
 
     <build>

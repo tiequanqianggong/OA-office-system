@@ -2,6 +2,8 @@ package com.ruoyi.defects.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.lcp.pojo.vo.ProjectTeamVO;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -18,47 +20,77 @@ public class Defects extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 缺陷id */
+    @ApiModelProperty("缺陷id")
     private Long defectId;
 
     /** 用例编号 */
     @Excel(name = "用例编号")
+    @ApiModelProperty("用例编号")
     private Long caseId;
+
+    /** 模块 */
+    @Excel(name = "模块")
+    @ApiModelProperty("模块")
+    private String moduleName;
+
+    /** 项目名称 */
+    @Excel(name = "项目名称")
+    @ApiModelProperty("项目名称")
+    private String projectName;
 
     /** 缺陷摘要 */
     @Excel(name = "缺陷摘要")
+    @ApiModelProperty("缺陷摘要")
     private String summary;
 
     /** 缺陷详细描述(用例id、操作步骤、预期结果、实际结果) */
     @Excel(name = "缺陷详细描述(用例id、操作步骤、预期结果、实际结果)")
+    @ApiModelProperty("缺陷详细描述")
     private String description;
 
     /** 严重程度(高、中、低优先级) */
     @Excel(name = "严重程度(高、中、低优先级)")
+    @ApiModelProperty("严重程度")
     private String severity;
 
     /** 状态(待解决、待测试、已关闭) */
     @Excel(name = "状态(待解决、待测试、已关闭)")
+    @ApiModelProperty("状态")
     private String status;
+
 
     /** 发现者 */
     @Excel(name = "发现者")
+    @ApiModelProperty("发现者")
     private String detectedBy;
 
     /** 发现日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "发现日期", width = 30, dateFormat = "yyyy-MM-dd")
+    @ApiModelProperty("发现日期")
     private Date detectedDate;
 
-    /** 分配给某开发人员 */
-    @Excel(name = "分配给某开发人员")
-    private String assignedTo;
+    /** 分配给某成员 */
+    @Excel(name = "分配给某成员")
+    @ApiModelProperty("分配给某成员")
+    private String teamId;
 
-    /** 解决日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "解决日期", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date resolutionDate;
+    /** 优先级 */
+    @Excel(name = "优先级")
+    @ApiModelProperty("优先级")
+    private String priority;
 
-    public void setDefectId(Long defectId) 
+//    private ProjectTeam projectTeam;
+//
+//    public ProjectTeam getProjectTeam() {
+//        return projectTeam;
+//    }
+//
+//    public void setProjectTeam(ProjectTeam projectTeam) {
+//        this.projectTeam = projectTeam;
+//    }
+
+    public void setDefectId(Long defectId)
     {
         this.defectId = defectId;
     }
@@ -130,23 +162,37 @@ public class Defects extends BaseEntity
     {
         return detectedDate;
     }
-    public void setAssignedTo(String assignedTo) 
-    {
-        this.assignedTo = assignedTo;
+
+    public String getTeamId() {
+        return teamId;
     }
 
-    public String getAssignedTo() 
-    {
-        return assignedTo;
-    }
-    public void setResolutionDate(Date resolutionDate) 
-    {
-        this.resolutionDate = resolutionDate;
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 
-    public Date getResolutionDate() 
-    {
-        return resolutionDate;
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     @Override
@@ -160,9 +206,12 @@ public class Defects extends BaseEntity
             .append("status", getStatus())
             .append("detectedBy", getDetectedBy())
             .append("detectedDate", getDetectedDate())
-            .append("assignedTo", getAssignedTo())
-            .append("resolutionDate", getResolutionDate())
+            .append("teamId", getTeamId())
+            .append("moduleName",getModuleName())
+            .append("projectName",getProjectName())
+            .append("priority",getPriority())
             .append("remark", getRemark())
+//            .append("ProjectTeam", getProjectTeam())
             .toString();
     }
 }

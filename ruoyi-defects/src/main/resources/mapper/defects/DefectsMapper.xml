@@ -7,33 +7,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="Defects" id="DefectsResult">
         <result property="defectId"    column="defect_id"    />
         <result property="caseId"    column="case_id"    />
+        <result property="moduleName"    column="module_name"    />
+        <result property="projectName"    column="project_name"    />
         <result property="summary"    column="summary"    />
         <result property="description"    column="description"    />
         <result property="severity"    column="severity"    />
         <result property="status"    column="status"    />
         <result property="detectedBy"    column="detected_by"    />
         <result property="detectedDate"    column="detected_date"    />
-        <result property="assignedTo"    column="assigned_to"    />
-        <result property="resolutionDate"    column="resolution_date"    />
+        <result property="teamId"    column="team_id"    />
+        <result property="priority"    column="priority"    />
         <result property="remark"    column="remark"    />
+<!--        <association property="projectTeam"   javaType="projectTeam" resultMap="com.ruoyi.defects.mapper.ProjectTeamMapper.ProjectTeamResult">-->
+
+<!--        </association>-->
     </resultMap>
 
     <sql id="selectDefectsVo">
-        select defect_id, case_id, summary, description, severity, status, detected_by, detected_date, assigned_to, resolution_date, remark from defects
+--         select d.*,pt.team_name from defects d  left join  project_team pt on d.team_id =pt.team_id
+           select defect_id, case_id, module_name,project_name,summary, description, severity, status, detected_by, detected_date, team_id,priority, remark from defects
     </sql>
 
     <select id="selectDefectsList" parameterType="Defects" resultMap="DefectsResult">
         <include refid="selectDefectsVo"/>
-        <where>  
+        <where>
+            <if test="defectId != null "> and defect_id = #{defectId}</if>
             <if test="caseId != null "> and case_id = #{caseId}</if>
+            <if test="moduleName != null  and moduleName != ''"> and module_name = #{moduleName}</if>
+            <if test="projectName != null  and projectName != ''"> and project_name = #{projectName}</if>
             <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
             <if test="description != null  and description != ''"> and description = #{description}</if>
             <if test="severity != null  and severity != ''"> and severity = #{severity}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="detectedBy != null  and detectedBy != ''"> and detected_by = #{detectedBy}</if>
             <if test="detectedDate != null "> and detected_date = #{detectedDate}</if>
-            <if test="assignedTo != null  and assignedTo != ''"> and assigned_to = #{assignedTo}</if>
-            <if test="resolutionDate != null "> and resolution_date = #{resolutionDate}</if>
+            <if test="teamId != null  and teamId != ''"> and team_id = #{teamId}</if>
+            <if test="priority != null  and priority != ''"> and priority = #{priority}</if>
         </where>
     </select>
     
@@ -47,27 +56,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="defectId != null">defect_id,</if>
             <if test="caseId != null">case_id,</if>
+            <if test="moduleName != null  and moduleName != ''">module_name,</if>
+            <if test="projectName != null  and projectName != ''">project_name,</if>
             <if test="summary != null and summary != ''">summary,</if>
             <if test="description != null and description != ''">description,</if>
             <if test="severity != null and severity != ''">severity,</if>
             <if test="status != null and status != ''">status,</if>
             <if test="detectedBy != null and detectedBy != ''">detected_by,</if>
             <if test="detectedDate != null">detected_date,</if>
-            <if test="assignedTo != null and assignedTo != ''">assigned_to,</if>
-            <if test="resolutionDate != null">resolution_date,</if>
+            <if test="teamId != null and teamId != ''">team_id,</if>
+            <if test="priority != null  and priority != ''">priority,</if>
             <if test="remark != null">remark,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="defectId != null">#{defectId},</if>
             <if test="caseId != null">#{caseId},</if>
+            <if test="moduleName != null">#{moduleName},</if>
+            <if test="projectName != null">#{projectName},</if>
             <if test="summary != null and summary != ''">#{summary},</if>
             <if test="description != null and description != ''">#{description},</if>
             <if test="severity != null and severity != ''">#{severity},</if>
             <if test="status != null and status != ''">#{status},</if>
             <if test="detectedBy != null and detectedBy != ''">#{detectedBy},</if>
             <if test="detectedDate != null">#{detectedDate},</if>
-            <if test="assignedTo != null and assignedTo != ''">#{assignedTo},</if>
-            <if test="resolutionDate != null">#{resolutionDate},</if>
+            <if test="teamId != null and teamId != ''">#{teamId},</if>
+            <if test="priority != null  and priority != ''">#{priority},</if>
             <if test="remark != null">#{remark},</if>
          </trim>
     </insert>
@@ -76,14 +89,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update defects
         <trim prefix="SET" suffixOverrides=",">
             <if test="caseId != null">case_id = #{caseId},</if>
+            <if test="moduleName != null  and moduleName != ''">module_name = #{moduleName},</if>
+            <if test="projectName != null  and projectName != ''">project_name = #{projectName},</if>
             <if test="summary != null and summary != ''">summary = #{summary},</if>
             <if test="description != null and description != ''">description = #{description},</if>
             <if test="severity != null and severity != ''">severity = #{severity},</if>
             <if test="status != null and status != ''">status = #{status},</if>
             <if test="detectedBy != null and detectedBy != ''">detected_by = #{detectedBy},</if>
             <if test="detectedDate != null">detected_date = #{detectedDate},</if>
-            <if test="assignedTo != null and assignedTo != ''">assigned_to = #{assignedTo},</if>
-            <if test="resolutionDate != null">resolution_date = #{resolutionDate},</if>
+            <if test="teamId != null and teamId != ''">team_id = #{teamId},</if>
+            <if test="priority != null  and priority != ''">priority = #{priority},</if>
             <if test="remark != null">remark = #{remark},</if>
         </trim>
         where defect_id = #{defectId}

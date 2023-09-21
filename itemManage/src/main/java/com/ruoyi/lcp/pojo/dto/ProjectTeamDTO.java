@@ -15,6 +15,6 @@ public class ProjectTeamDTO {
     private String teamName;//项目成员姓名
     private int teamStatus;//项目成员状态 1在岗/2离职/3休假
     private String teamRole;//项目成员角色
-    private String teamResponsibility;//项目成员责任描述 分配的模块
+    private Integer modelId; // 模块表id 分配的模块  项目管理/测试用例.....
 
 }
