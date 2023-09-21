@@ -174,11 +174,18 @@ public class DefectsController extends BaseController
     @ApiOperation("新增缺陷管理")
     public AjaxResult add(@RequestBody Defects defects)
     {
+        Long caseId_uuid = 1L;
+        try {
+            long maxid = defectsService.selectMaxId();
+            //生成 测试用例ID
+            caseId_uuid= maxid+1;
+        }catch (Exception e)
+        {
 
-        //生成 测试用例ID
-        Long caseId_uuid = defectsService.selectMaxId()+1;
-        if (caseId_uuid == null)
-            caseId_uuid = 1L;
+        }
+
+
+
 
         System.err.println("maxID " + caseId_uuid);
 
