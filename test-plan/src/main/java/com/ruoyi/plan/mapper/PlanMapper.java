@@ -1,5 +1,7 @@
 package com.ruoyi.plan.mapper;
 
+
+
 import com.ruoyi.plan.domain.pojo.Plan;
 
 import java.util.List;
@@ -14,24 +16,79 @@ public interface  PlanMapper {
 
 
     /**
-     * 查询测试计划列表
+     * 查询测试计划
      *
-     * @return 测试计划集合
+     * @param testPlanId 测试计划主键
+     * @return 测试计划
      */
-     List<Plan> selectPlanList();
+    Plan selectPlanByTestPlanId(Long testPlanId);
 
     /**
-     * 根据测试计划id查询关联的项目
-     * @param planId  测试计划id
-     * @return 项目名
+     *  查询测试计划列表
+     * @author liupian
+     * @date 2023/9/15 17:32:36
+     * @return  测试计划集合
      */
-     String selectItemName(long planId);
+
+    List<Plan> selectPlanList();
     /**
-     * 根据测试计划删除
-     * @param planId  测试计划id
+     * 查询最近完成的5条最近完成测试计划
+     * @author liupian
+     * @date 2023/9/18 13:35:45
+     * @return 最近完成测试计划集合
+     */
+    List<Plan> selectPlanRecently();
+
+    /**
+     * 新增测试计划(单个所有字段)
+     * @author liupian
+     * @date 2023/9/15 17:32:36
+     * @param plan 测试计划
      * @return 结果
      */
-    int deleteByPlanId(Long planId);
+     int insertPlan(Plan plan);
+    /**
+     * 修改测试计划
+     * @author liupian
+     * @date 2023/9/15 17:32:36
+     * @param plan 测试计划
+     * @return 结果
+     */
+    int updateTestPlan(Plan plan);
+    /**
+     * 修改测试计划(修改所有字段)
+     * @author liupian
+     * @date 2023/9/15 17:32:36
+     * @param plan 测试计划
+     * @return 结果
+     */
+     int updatePlan(Plan plan);
 
-    int deleteByPlanIds(Long[] planIds);
+    /**
+     * 批量删除测试计划
+     * @author liupian
+     * @date 2023/9/15 17:32:36
+     * @param testPlanIds 需要删除的测试计划主键集合
+     * @return 结果
+     */
+     int deletePlanByTestPlanIds(Long[] testPlanIds);
+
+    /**
+     * 删除测试计划信息
+     * @author liupian
+     * @date 2023/9/15 17:32:36
+     * @param testPlanId 测试计划主键
+     * @return 结果
+     */
+     int deletePlanByTestPlanId(Long testPlanId);
+
+    /**
+     * 彻底删除逻辑删除中的数据
+     * @author liupian
+     * @date 2023/9/15 17:37:44
+     * @return 结果
+     */
+    int deleteComplete();
+
+
 }

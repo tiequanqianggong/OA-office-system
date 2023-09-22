@@ -4,19 +4,26 @@
 <resultMap id="UserVOMap" type="com.ruoyi.plan.domain.vo.UserVO">
     <id property="userId" column="user_id"/>
     <result property="nickName" column="nick_name"/>
-    <result property="avatar" column="avatar"/>
 </resultMap>
     <delete id="deleteUserPlanByPlanId" parameterType="Long">
         delete from test_user_plan where test_plan_id=#{planId}
     </delete>
 
 
-    <select id="findUserListById" resultMap="UserVOMap">
-        SELECT u.user_id, u.nick_name,u.avatar
+    <select id="findUserListById" parameterType="Long" resultMap="UserVOMap">
+        SELECT u.user_id, u.nick_name
         FROM sys_user u
                  JOIN test_user_plan up ON u.user_id = up.user_id
         WHERE up.test_plan_id= #{planId};
     </select>
+
+    <select id="selectCountUser" parameterType="Long" resultType="boolean">
+        SELECT COUNT(user_id) FROM sys_user WHERE user_id = #{userId}
+    </select>
+    <insert id="insertUserPlan" parameterType="UserPlan">
+        INSERT INTO test_user_plan (test_plan_id, user_id)
+        VALUES (#{testPlanId}, #{userId})
+    </insert>
 
     <delete id="deleteUserPlanByPlanIds" parameterType="Long">
         delete from test_user_plan  where test_plan_id in
@@ -24,4 +31,7 @@
             #{planId}
         </foreach>
     </delete>
+
+    
+
 </mapper>

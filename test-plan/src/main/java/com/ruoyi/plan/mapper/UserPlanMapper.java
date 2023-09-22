@@ -1,5 +1,6 @@
 package com.ruoyi.plan.mapper;
 
+import com.ruoyi.plan.domain.pojo.UserPlan;
 import com.ruoyi.plan.domain.vo.UserVO;
 
 import java.util.List;
@@ -27,6 +28,24 @@ public interface UserPlanMapper {
      */
     int deleteUserPlanByPlanId(Long planId);
 
-
+    /**
+     * 批量删除测试计划id
+     * @param planIds 测试计划数组
+     * @return 结果
+     */
     int deleteUserPlanByPlanIds(Long[] planIds);
+
+    /**
+     * 查询用户是否存在
+     * @param userId 用户id
+     * @return 结果
+     */
+    boolean selectCountUser(Long userId);
+
+    /**
+     * 添加
+     * @param userPlan 用户测试计划id
+     * @return 结果
+     */
+    int insertUserPlan(UserPlan userPlan);
 }

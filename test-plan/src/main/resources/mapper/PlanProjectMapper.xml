@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.plan.mapper.PlanProjectMapper">
+
+    <select id="selectProjectNameByPlanId" parameterType="Long" resultType="String">
+        SELECT p.project_name
+        FROM project p
+                 JOIN test_plan_project up ON p.project_id = up.project_id
+        WHERE up.test_plan_id= #{planId};
+    </select>
+
+    <select id="selectCountProject" parameterType="Long" resultType="boolean">
+        SELECT COUNT(project_id) FROM project WHERE project_id = #{projectId}
+    </select>
+
+    <insert id="insertPlanProject" parameterType="PlanProject">
+        INSERT INTO test_plan_project (test_plan_id, project_id)
+        VALUES (#{testPlanId}, #{projectId})
+    </insert>
+
+    <update id="updatePlanProject" parameterType="PlanProject">
+        UPDATE test_plan_project SET project_id = (#{projectId})
+                                 WHERE test_plan_id = (#{testPlanId})
+    </update>
+
+</mapper>

@@ -2,6 +2,10 @@ package com.ruoyi.plan.domain.pojo;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,6 +15,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author ruoyi
  * @date 2023-09-07
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserPlan extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -23,30 +31,5 @@ public class UserPlan extends BaseEntity
     @Excel(name = "测试计划id")
     private Long testPlanId;
 
-    public void setUserId(Long userId)
-    {
-        this.userId = userId;
-    }
 
-    public Long getUserId()
-    {
-        return userId;
-    }
-    public void setTestPlanId(Long testPlanId)
-    {
-        this.testPlanId = testPlanId;
-    }
-
-    public Long getTestPlanId()
-    {
-        return testPlanId;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-            .append("userId", getUserId())
-            .append("testPlanId", getTestPlanId())
-            .toString();
-    }
 }

@@ -1,26 +1,23 @@
 package com.ruoyi.plan.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.common.annotation.Excel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
-
 /**
- * Plan集合Vo
- * @author lxz
+ * 返回详细的测试计划
+ * @author liupian
+ * @description
+ * @date 2023/9/15 17:44:10
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class PlanListVO {
-
+public class PlanVO {
     /**
      * 测试计划
      */
@@ -58,8 +55,14 @@ public class PlanListVO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
-
+    /**
+     * 关联的用户
+     */
     private List<UserVO> userList;
 
+    /**
+     * 项目名
+     */
+    private String projectName;
 
 }
