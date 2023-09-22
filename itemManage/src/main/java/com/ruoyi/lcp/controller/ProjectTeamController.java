@@ -4,6 +4,7 @@ package com.ruoyi.lcp.controller;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableSupport;
+import com.ruoyi.lcp.constant.BaseContext;
 import com.ruoyi.lcp.pojo.Project;
 import com.ruoyi.lcp.pojo.dto.ProjectPageQueryDTO;
 import com.ruoyi.lcp.pojo.dto.ProjectTeamAddDTO;
@@ -79,7 +80,8 @@ public class ProjectTeamController extends BaseController {
         tableDataInfo.setCode(HttpStatus.SUCCESS);
         tableDataInfo.setMsg("查询成功");
         tableDataInfo.setRows(projectTeamVOList);
-        tableDataInfo.setTotal(iProjectTeamService.countAllProjectTeam().size());
+        //获取线程中保存的集合大小
+        tableDataInfo.setTotal(BaseContext.getCountNum());
 
         //将VO传给前端
         return tableDataInfo;

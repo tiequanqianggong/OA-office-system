@@ -77,4 +77,23 @@ public class RedisU {
         return data;
     }
 
+    /**
+     * 将获取到的Redis中的Hash数据转化为List形式
+     * @param valueType
+     * @param hashData
+     * @return
+     * @param <T>
+     */
+    public <T> List<T> getHashToList(Class<T> valueType,Map<String, String> hashData) {
+        List<T> data = new ArrayList<>();
+        for ( Map.Entry<String, String> entry : hashData.entrySet()){
+            T value = (T) entry.getValue();
+            if (value != null) {
+                data.add(value);
+            }
+        }
+
+        return data;
+    }
+
 }

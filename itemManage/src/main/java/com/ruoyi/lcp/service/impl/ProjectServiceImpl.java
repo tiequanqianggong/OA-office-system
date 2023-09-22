@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.lcp.constant.BaseContext;
 import com.ruoyi.lcp.constant.RedisConstants;
 import com.ruoyi.lcp.mapper.ProjectMapper;
 import com.ruoyi.lcp.pojo.Project;
@@ -76,21 +77,32 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
 //               return projectMapper.pageQuery(projectPageQueryDTO);
 //           }
 
-           //     如果缓存不为空       有分页参数       且不是条件查询
+           //     如果缓存不为空      且不是条件查询
            //     从缓存中获取数据
-           if (redisCache.hasKey(projectKey)&& projectPageQueryDTO==null&&pageNum!=null&&pageSize!=null){
+           if (redisCache.hasKey(projectKey)&& projectPageQueryDTO==null){
 
                /**
                 * 通过读取若依获取的分页参数， 根据分页算法获取redis中的数据，     不完善：
                 */
                // 获取符合模式为 "project_manage:CACHE_Project*" 的哈希表
                Map<String, String> hashData = redisCache.getCacheMap(projectKey);
-               List<Project> projectList=redisU.getDataFromRedis(pageNum,pageSize,projectKey,hashData,Project.class);
-               return projectList;
+               //设置线程参数记录数据长度
+               BaseContext.setCountNum((long) hashData.size());
+               //如果是分页查询有分页参数进入Redis分页工具类进行分页并返回
+               if (pageNum!=null&&pageSize!=null) {
+                   List<Project> projectList = redisU.getDataFromRedis(pageNum, pageSize, projectKey, hashData, Project.class);
+                   return projectList;
+               }
+               //无分页参数直接返回Redis中的所有数据,通过redisU工具类将 Map转化为List
+               return  redisU.getHashToList(Project.class,hashData);
            }
            //从数据库查询
            List<Project> projects = projectMapper.pageQuery(projectPageQueryDTO);
+           //将获取数据的大小记录到线程中
+           BaseContext.setCountNum((long) projects.size());
 
+
+           //解决缓存穿透
            if (extracted(projectPageQueryDTO, projectKey, projectNullKey, projects)) {
                return redisCache.getCacheList(projectNullKey);
            }

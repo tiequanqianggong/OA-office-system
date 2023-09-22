@@ -3,7 +3,7 @@ package com.ruoyi.lcp.constant;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RedisConstants {
-    public static final  Long RedisTTL=getRandomLongInRange(3000L,6000L);
+    public static final  Long RedisTTL=getRandomLongInRange(50L,100L);
 
     public static final  String PROJECT_MANAGE_KEY="project_manage:CACHE_Project";//项目key
     public static final String PROJECT_MANAGE_TEAM_KEY="project_manage:CACHE_ProjectTeam";//项目团队key

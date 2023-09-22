@@ -6,6 +6,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.lcp.constant.BaseContext;
 import com.ruoyi.lcp.pojo.Project;
 import com.ruoyi.lcp.pojo.dto.ProjectUpdateDTO;
 import com.ruoyi.lcp.pojo.dto.ProjectPageQueryDTO;
@@ -63,7 +64,8 @@ public class ProjectController extends BaseController {
         tableDataInfo.setCode(HttpStatus.SUCCESS);
         tableDataInfo.setMsg("查询成功");
         tableDataInfo.setRows(projectVOList);
-        tableDataInfo.setTotal(iProjectService.countAllProject().size());
+        //获取线程中保存的集合大小
+        tableDataInfo.setTotal(BaseContext.getCountNum());
 
         //将VO传给前端
         return tableDataInfo;
