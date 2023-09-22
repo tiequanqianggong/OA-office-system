@@ -60,6 +60,8 @@ public class PlanVO {
      */
     private List<UserVO> userList;
 
+    private Long projectId;
+
     /**
      * 项目名
      */

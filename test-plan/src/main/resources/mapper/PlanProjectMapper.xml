@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ruoyi.plan.mapper.PlanProjectMapper">
-
-    <select id="selectProjectNameByPlanId" parameterType="Long" resultType="String">
-        SELECT p.project_name
+    <resultMap id="ProjectVOMap" type="com.ruoyi.plan.domain.vo.PlanProjectVO">
+        <id property="projectId" column="project_id"/>
+        <result property="projectName" column="project_name"/>
+    </resultMap>
+    <select id="selectProjectNameByPlanId" parameterType="Long" resultMap="ProjectVOMap">
+        SELECT p.project_id, p.project_name
         FROM project p
                  JOIN test_plan_project up ON p.project_id = up.project_id
         WHERE up.test_plan_id= #{planId};

@@ -7,6 +7,7 @@ import com.ruoyi.plan.domain.pojo.Plan;
 import com.ruoyi.plan.domain.pojo.PlanProject;
 import com.ruoyi.plan.domain.pojo.UserPlan;
 import com.ruoyi.plan.domain.vo.PlanListVO;
+import com.ruoyi.plan.domain.vo.PlanProjectVO;
 import com.ruoyi.plan.domain.vo.PlanRecentlyVO;
 import com.ruoyi.plan.domain.vo.PlanVO;
 import com.ruoyi.plan.exception.PlanIdNotException;
@@ -57,7 +58,12 @@ public class PlanServiceImpl implements PlanService {
         PlanVO planVo = new PlanVO();
         BeanUtils.copyBeanProp(planVo, plan);
         //查找关联项目名
-        planVo.setProjectName(planProjectMapper.selectProjectNameByPlanId(planVo.getTestPlanId()));
+        PlanProjectVO planProjectVO = new PlanProjectVO();
+        planProjectVO =planProjectMapper.selectProjectNameByPlanId(planVo.getTestPlanId());
+        System.out.println(planProjectVO);
+        planVo.setProjectId(planProjectVO.getProjectId());
+        planVo.setProjectName(planProjectVO.getProjectName());
+
         //查找关联的用户
         planVo.setUserList(userPlanMapper.findUserListById(planVo.getTestPlanId()));
         return planVo;
@@ -98,7 +104,7 @@ public class PlanServiceImpl implements PlanService {
     /**
      * 添加测试计划
      * @author lxz
-     * @param planDTO 修改测试计划DTO
+     * @param planDTO 添加测试计划DTO
      * @return 结果
      */
     @Transactional
