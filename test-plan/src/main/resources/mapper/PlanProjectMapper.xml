@@ -26,4 +26,11 @@
                                  WHERE test_plan_id = (#{testPlanId})
     </update>
 
+    <delete id="deletePlanProject" parameterType="Long">
+        delete from test_plan_project where test_plan_id in
+        <foreach item="testPlanId" collection="array" open="(" separator="," close=")">
+            #{testPlanId}
+        </foreach>
+    </delete>
+
 </mapper>

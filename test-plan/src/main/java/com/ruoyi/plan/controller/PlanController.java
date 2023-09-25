@@ -42,7 +42,7 @@ public class PlanController extends BaseController {
      * @author liupian
      * @date 2023/9/12 16:24:52
      */
-    @PreAuthorize("@ss.hasPermi('test:plan:list')")
+//    @PreAuthorize("@ss.hasPermi('test:plan:list')")
     @ApiOperation(value = "查询测试计划列表" )
     @GetMapping("/list")
     public TableDataInfo getPlanList(){
@@ -63,6 +63,20 @@ public class PlanController extends BaseController {
         ajaxResult.put("date",planService.selectPlanByTestPlanId(planId));
         return ajaxResult;
     }
+
+    /**
+     * 模糊查询测试计划
+     * @author liupian
+     * @date 2023/9/12 16:24:52
+     */
+    @ApiOperation(value = "模糊查询测试计划" )
+    @PostMapping("/like")
+    public TableDataInfo getPlanLikeList(@RequestBody  Plan plan){
+        startPage();
+        List<PlanListVO> list = planService.getPlanLikeList(plan);
+        return getDataTable(list);
+
+    }
     /**
      * 查询最近完成的五条测试计划
      * @author liupian
@@ -77,7 +91,7 @@ public class PlanController extends BaseController {
     /**
      * 导出测试计划列表
      */
-    @PreAuthorize("@ss.hasPermi('test:plan:export')")
+//    @PreAuthorize("@ss.hasPermi('test:plan:export')")
     @Log(title = "测试计划", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ApiOperation("导出测试计划列表")
@@ -92,7 +106,7 @@ public class PlanController extends BaseController {
      * @author liupian
      * @date 2023/9/12 16:24:52
      */
-    @PreAuthorize("@ss.hasPermi('test:plan:remove')")
+//    @PreAuthorize("@ss.hasPermi('test:plan:remove')")
     @ApiOperation("删除测试计划")
     @Log(title = "测试计划管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{planIds}")
@@ -108,7 +122,7 @@ public class PlanController extends BaseController {
      * @param planDTO 添加的数据
      * @return TODO
      */
-    @PreAuthorize("@ss.hasPermi('test:plan:add')")
+//    @PreAuthorize("@ss.hasPermi('test:plan:add')")
     @ApiImplicitParam(name = "planDTO",value = "添加的数据")
     @PostMapping()
     @ApiOperation("添加测试计划")
@@ -117,7 +131,7 @@ public class PlanController extends BaseController {
         return toAjax(planService.insertPlan(planDTO));
     }
 
-    @PreAuthorize("@ss.hasPermi('test:plan:edit')")
+//    @PreAuthorize("@ss.hasPermi('test:plan:edit')")
     @ApiImplicitParam(name = "updatePlanDTO",value = "修改的数据")
     @PutMapping()
     @ApiOperation("修改测试计划")
