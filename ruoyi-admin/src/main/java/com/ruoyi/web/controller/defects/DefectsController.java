@@ -71,10 +71,10 @@ public class DefectsController extends BaseController
     @PreAuthorize("@ss.hasPermi('defects:defects:list')")
     @GetMapping("/teamList")
     @ApiOperation("查询员工姓名")
-    public  TableDataInfo teamList()
+    public  TableDataInfo teamList(String teamName)
     {
         startPage();
-        List<Team> list = teamService.selectTeamList();
+        List<Team> list = teamService.selectTeamList(teamName);
         return getDataTable(list);
     }
 
