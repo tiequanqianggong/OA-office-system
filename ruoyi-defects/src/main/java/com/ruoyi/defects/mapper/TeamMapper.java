@@ -9,7 +9,7 @@ import java.util.List;
 public interface TeamMapper {
 
     //查询员工id和姓名
-    public List<Team> selectTeamList();
+    public List<Team> selectTeamList(String teamName);
 
     //根据用例id查询用例id和项目名称
     public CaseIdAndProjectName selectCaseIdAndProjectName(Long caseId);

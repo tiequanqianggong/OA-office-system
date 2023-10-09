@@ -16,6 +16,9 @@
     </resultMap>
   <select id="selectTeamList"  resultMap="TeamResult">
      SELECT team_id, team_name FROM project_team
+     <where>
+         <if test="teamName !=null and teamName != '' "> and team_name like concat('%',#{teamName},'%')</if>
+     </where>
   </select>
 
  <select id="selectCaseIdAndProjectName" resultMap="CaseIdAndProjectNameResult">

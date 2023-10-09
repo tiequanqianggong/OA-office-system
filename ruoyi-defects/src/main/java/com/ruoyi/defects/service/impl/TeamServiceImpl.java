@@ -20,8 +20,8 @@ public class TeamServiceImpl implements ITeamService {
     /**
      *查询所有员工姓名
      */
-    public List<Team> selectTeamList() {
-        List<Team> teamList = teamMapper.selectTeamList();
+    public List<Team> selectTeamList(String teamName) {
+        List<Team> teamList = teamMapper.selectTeamList(teamName);
         return teamList;
     }
 
