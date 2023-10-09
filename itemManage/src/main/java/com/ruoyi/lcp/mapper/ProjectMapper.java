@@ -51,9 +51,21 @@ public interface ProjectMapper extends BaseMapper<Project> {
      */
     void update();
 
+    /**
+     * 根据项目名称查询
+     * @param projectPageQueryDTO
+     * @return
+     */
     List<Project> QueryProjectByProjectName(ProjectPageQueryDTO projectPageQueryDTO);
 
     List<Long> countAllProject();
+
+    /**
+     * 根据项目id查询项目状态
+     */
+    int  selectStatusByProjectId(Long projectId);
+
+
 //    /**
 //     * 根据project 修改projectId
 //     *

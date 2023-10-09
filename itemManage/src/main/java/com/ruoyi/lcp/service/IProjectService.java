@@ -61,6 +61,22 @@ public interface IProjectService extends IService<Project> {
      */
      List<Long> countAllProject();
 
+
+    /**
+     * 根据项目id查询项目状态
+     * @param id
+     * @return
+     */
+    int selectStatusByProjectId(Long id);
+    /**
+     * 批量删除项目
+     * @param projectIds
+     * @return
+     */
+    int deleteListProject(List<Long> projectIds);
+
+
+
 //    /**
 //     * 根据project 修改projectId
 //     *

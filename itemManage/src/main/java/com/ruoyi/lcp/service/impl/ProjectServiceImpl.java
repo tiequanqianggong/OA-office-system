@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import static com.ruoyi.lcp.constant.ProjectConstants.ProjectPending;
 import static com.ruoyi.lcp.constant.RedissonConstants.ReadLock;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -290,5 +291,39 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
     @Override
     public List<Long> countAllProject(){
         return projectMapper.countAllProject();
+    }
+
+    /**
+     * 根据项目id查询项目状态
+     * @param projectId
+     * @return
+     */
+    public int  selectStatusByProjectId(Long projectId){
+        return projectMapper.selectStatusByProjectId(projectId);
+    }
+    /**
+     * 批量删除项目
+     * @param projectIds
+     * @return
+     */
+    @Override
+    public int deleteListProject(List<Long> projectIds) {
+        RReadWriteLock rReadWriteLock = redissonClient.getReadWriteLock( ReadLock+ SecurityUtils.getUserId());
+        RLock readLock=rReadWriteLock.readLock();
+        try {
+            readLock.lock();
+            //如果缓存存在，删除缓存
+            if(redisCache.hasKey(projectKey)){
+                redisCache.deleteObject(projectKey);
+            }
+            int row = 0;
+            for (Long id:projectIds){
+                projectMapper.delFlag(id);
+                row++;
+            }
+            return row;
+        }finally {
+            readLock.unlock();
+        }
     }
 }

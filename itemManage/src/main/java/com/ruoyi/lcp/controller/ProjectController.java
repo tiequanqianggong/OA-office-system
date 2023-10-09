@@ -97,7 +97,7 @@ public class ProjectController extends BaseController {
     @DeleteMapping("/delete/{projectId}")
     @ApiImplicitParam(name = "DeleteProject",value = "根据projectId删除")
     public AjaxResult DeleteProject(@PathVariable Long projectId){
-        //通过提供id条件 分页查询
+        //通过提供id条件 条件查询
         ProjectPageQueryDTO projectPageQueryDTO=ProjectPageQueryDTO.builder()
                 .projectId(projectId)
                 .build();
@@ -110,6 +110,22 @@ public class ProjectController extends BaseController {
         }
         return toAjax(iProjectService.deleteProject(projectId));
     }
+    @ApiOperation("项目管理批量删除")
+    @PreAuthorize("@ss.hasPermi('system:project:delete')")
+    @Log(title = "项目管理", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete")
+    @ApiImplicitParam(name = "DeleteListProject",value = "根据projectId批量删除")
+    public  AjaxResult DeleteListProject(List<Long> projectIds){
+        //当前项目是否能删除
+        for (Long id : projectIds) {
+            int status=iProjectService.selectStatusByProjectId(id);
+            if (status==ProjectPending){
+                return warn("项目已挂起，不允许删除");
+            }
+        }
+         return toAjax( iProjectService.deleteListProject(projectIds));
+    }
+
 
 
 
