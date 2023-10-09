@@ -7,6 +7,7 @@ import com.ruoyi.plan.domain.pojo.Plan;
 import com.ruoyi.plan.domain.pojo.PlanProject;
 import com.ruoyi.plan.domain.pojo.UserPlan;
 import com.ruoyi.plan.domain.vo.PlanListVO;
+import com.ruoyi.plan.domain.vo.PlanProjectVO;
 import com.ruoyi.plan.domain.vo.PlanRecentlyVO;
 import com.ruoyi.plan.domain.vo.PlanVO;
 import com.ruoyi.plan.exception.PlanIdNotException;
@@ -57,7 +58,12 @@ public class PlanServiceImpl implements PlanService {
         PlanVO planVo = new PlanVO();
         BeanUtils.copyBeanProp(planVo, plan);
         //查找关联项目名
-        planVo.setProjectName(planProjectMapper.selectProjectNameByPlanId(planVo.getTestPlanId()));
+        PlanProjectVO planProjectVO = new PlanProjectVO();
+        planProjectVO =planProjectMapper.selectProjectNameByPlanId(planVo.getTestPlanId());
+        System.out.println(planProjectVO);
+        planVo.setProjectId(planProjectVO.getProjectId());
+        planVo.setProjectName(planProjectVO.getProjectName());
+
         //查找关联的用户
         planVo.setUserList(userPlanMapper.findUserListById(planVo.getTestPlanId()));
         return planVo;
@@ -81,6 +87,19 @@ public class PlanServiceImpl implements PlanService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public List<PlanListVO> getPlanLikeList(Plan plan) {
+        List<Plan> planList = planMapper.searchTestPlans(plan);
+        return planList.stream()
+                .map(tmp -> {
+                    PlanListVO planVo = new PlanListVO();
+                    BeanUtils.copyBeanProp( planVo, tmp);
+                    //查询计划人员并封装
+                    planVo.setUserList(userPlanMapper.findUserListById(planVo.getTestPlanId()));
+                    return planVo;
+                }).collect(Collectors.toList());
+    }
+
     /**
      * 查询最近完成的五条测试计划
      * @return 计划集合
@@ -98,7 +117,7 @@ public class PlanServiceImpl implements PlanService {
     /**
      * 添加测试计划
      * @author lxz
-     * @param planDTO 修改测试计划DTO
+     * @param planDTO 添加测试计划DTO
      * @return 结果
      */
     @Transactional
@@ -179,6 +198,8 @@ public class PlanServiceImpl implements PlanService {
      */
     @Override
     public int deletePlanByTestPlanIds(Long[] testPlanIds) {
+        userPlanMapper.deleteUserPlanByPlanIds(testPlanIds);
+        planProjectMapper.deletePlanProject(testPlanIds);
         return planMapper.deletePlanByTestPlanIds(testPlanIds);
     }
 
@@ -190,6 +211,7 @@ public class PlanServiceImpl implements PlanService {
      */
     @Override
     public int deletePlanByTestPlanId(Long testPlanId) {
+
         return planMapper.deletePlanByTestPlanId(testPlanId);
     }
 

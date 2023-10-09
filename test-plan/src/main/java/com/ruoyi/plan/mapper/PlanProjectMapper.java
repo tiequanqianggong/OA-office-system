@@ -1,6 +1,7 @@
 package com.ruoyi.plan.mapper;
 
 import com.ruoyi.plan.domain.pojo.PlanProject;
+import com.ruoyi.plan.domain.vo.PlanProjectVO;
 
 /**
  * @author liupian
@@ -15,7 +16,7 @@ public interface PlanProjectMapper {
      * @param planId 测试计划
      * @return 项目名
      */
-    String selectProjectNameByPlanId(Long planId);
+    PlanProjectVO selectProjectNameByPlanId(Long planId);
 
     /**
      * 查询id是否存在
@@ -35,5 +36,7 @@ public interface PlanProjectMapper {
      * @return 结果
      */
     int  updatePlanProject(PlanProject planProject);
+
+    int deletePlanProject(Long[] planIds);
 
 }

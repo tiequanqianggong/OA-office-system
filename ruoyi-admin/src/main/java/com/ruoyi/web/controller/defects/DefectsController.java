@@ -3,14 +3,11 @@ package com.ruoyi.web.controller.defects;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.defects.domain.CaseIdAndProjectName;
+import com.ruoyi.defects.domain.ProjectName;
 import com.ruoyi.defects.domain.Defects;
 import com.ruoyi.defects.domain.Module;
 import com.ruoyi.defects.domain.Team;
@@ -22,12 +19,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.PortResolverImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,10 +66,10 @@ public class DefectsController extends BaseController
     @PreAuthorize("@ss.hasPermi('defects:defects:list')")
     @GetMapping("/teamList")
     @ApiOperation("查询员工姓名")
-    public  TableDataInfo teamList()
+    public  TableDataInfo teamList(String teamName)
     {
         startPage();
-        List<Team> list = teamService.selectTeamList();
+        List<Team> list = teamService.selectTeamList(teamName);
         return getDataTable(list);
     }
 
@@ -142,15 +137,15 @@ public class DefectsController extends BaseController
         return success(defects);
     }
     /**
-     * 根据用例ID查询用例id和项目名称
+     * 根据用例ID查询项目名称
      */
     @PreAuthorize("@ss.hasPermi('defects:defects:query')")
     @GetMapping(value = "/caseId/{caseId}")
     @ApiOperation("根据用例ID查询用例id和项目名称")
-    public AjaxResult getCaseIdAndProjectName(@PathVariable("caseId") Long caseId)
+    public AjaxResult getProjectName(@PathVariable("caseId") Long caseId)
     {
-        CaseIdAndProjectName caseIdAndProjectName = teamService.selectCaseIdAndProjectName(caseId);
-        return success(caseIdAndProjectName);
+        ProjectName ProjectName = teamService.selectProjectName(caseId);
+        return success(ProjectName);
     }
 
 

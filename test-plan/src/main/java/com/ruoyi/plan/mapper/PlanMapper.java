@@ -89,6 +89,13 @@ public interface  PlanMapper {
      * @return 结果
      */
     int deleteComplete();
+    /**
+     * 模糊查询
+     * @author liupian
+     * @date 2023/9/25 10:35:44
+     * @return 结果
+     */
+    List<Plan> searchTestPlans(Plan plan);
 
 
 }

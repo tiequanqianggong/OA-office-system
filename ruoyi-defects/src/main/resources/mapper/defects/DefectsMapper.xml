@@ -33,19 +33,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectDefectsList" parameterType="Defects" resultMap="DefectsResult">
         <include refid="selectDefectsVo"/>
         <where>
-            <if test="defectId != null "> and d.defect_id = #{defectId}</if>
-            <if test="caseId != null "> and d.case_id = #{caseId}</if>
-            <if test="moduleName != null  and moduleName != ''"> and d.module_name = #{moduleName}</if>
-            <if test="projectName != null  and projectName != ''"> and d.project_name = #{projectName}</if>
-            <if test="summary != null  and summary != ''"> and d.summary = #{summary}</if>
-            <if test="description != null  and description != ''"> and d.description = #{description}</if>
-            <if test="severity != null  and severity != ''"> and d.severity = #{severity}</if>
-            <if test="status != null  and status != ''"> and d.status = #{status}</if>
-            <if test="detectedBy != null  and detectedBy != ''"> and d.detected_by = #{detectedBy}</if>
-            <if test="detectedDate != null "> and d.detected_date = #{detectedDate}</if>
+            <if test="defectId != null "> and d.defect_id like concat('%',#{defectId},'%')</if>
+            <if test="caseId != null "> and d.case_id like concat('%',#{caseId},'%')</if>
+            <if test="moduleName != null  and moduleName != ''"> and d.module_name like concat('%',#{moduleName},'%')</if>
+            <if test="projectName != null  and projectName != ''"> and d.project_name like concat('%', #{projectName},'%')</if>
+            <if test="summary != null  and summary != ''"> and d.summary like concat('%',#{summary},'%') </if>
+            <if test="description != null  and description != ''"> and d.description like concat('%',#{description},'%') </if>
+            <if test="severity != null  and severity != ''"> and d.severity like concat('%', #{severity},'%')</if>
+            <if test="status != null  and status != ''"> and d.status like concat('%',#{status},'%') </if>
+            <if test="detectedBy != null  and detectedBy != ''"> and d.detected_by like concat('%', #{detectedBy},'%')</if>
+            <if test="detectedDate != null "> and d.detected_date like concat('%', #{detectedDate},'%')</if>
 <!--            <if test="teamName != null  and teamName != ''"> and pt.team_name = #{teamName}</if>-->
-            <if test="teamId != null  and teamId != ''"> and pt.team_id = #{teamId}</if>
-            <if test="priority != null  and priority != ''"> and d.priority = #{priority}</if>
+            <if test="teamId != null  and teamId != ''"> and pt.team_id like concat('%',#{teamId},'%') </if>
+            <if test="priority != null  and priority != ''"> and d.priority like concat('%', #{priority},'%')</if>
         </where>
     </select>
     
