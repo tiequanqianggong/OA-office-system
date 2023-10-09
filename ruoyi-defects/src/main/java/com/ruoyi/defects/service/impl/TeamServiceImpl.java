@@ -1,6 +1,6 @@
 package com.ruoyi.defects.service.impl;
 
-import com.ruoyi.defects.domain.CaseIdAndProjectName;
+import com.ruoyi.defects.domain.ProjectName;
 import com.ruoyi.defects.domain.Module;
 import com.ruoyi.defects.domain.Team;
 import com.ruoyi.defects.mapper.TeamMapper;
@@ -27,12 +27,12 @@ public class TeamServiceImpl implements ITeamService {
 
 
     /**
-     * 根据用例ID查询用例id和项目名称
+     * 根据用例ID查项目名称
      */
     @Override
-    public CaseIdAndProjectName selectCaseIdAndProjectName(Long caseId) {
-       CaseIdAndProjectName caseIdAndProjectName= teamMapper.selectCaseIdAndProjectName(caseId);
-        return caseIdAndProjectName;
+    public ProjectName selectProjectName(Long caseId) {
+       ProjectName ProjectName= teamMapper.selectProjectName(caseId);
+        return ProjectName;
     }
    //     根据用例ID查询模块名称
     @Override

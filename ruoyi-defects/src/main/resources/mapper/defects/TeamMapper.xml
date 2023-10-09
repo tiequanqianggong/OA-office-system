@@ -7,9 +7,8 @@
         <id column="team_id" property="teamId"/>
         <result column="team_name" property="teamName"/>
     </resultMap>
-    <resultMap id="CaseIdAndProjectNameResult" type="CaseIdAndProjectName">
+    <resultMap id="ProjectNameResult" type="ProjectName">
         <result column="project_name" property="projectName"/>
-        <result column="id" property="id"/>
     </resultMap>
     <resultMap id="ModuleNameResult" type="Module">
         <result column="model_name" property="modelName"/>
@@ -21,12 +20,10 @@
      </where>
   </select>
 
- <select id="selectCaseIdAndProjectName" resultMap="CaseIdAndProjectNameResult">
-     SELECT  p.project_name, tc.id FROM project p,test_case tc WHERE  (SELECT  item_id  FROM test_case  WHERE id = #{caseId}) =item_id=p.project_id
+ <select id="selectProjectName" resultMap="ProjectNameResult">
+        SELECT project_name     FROM project p    WHERE  project_id=(SELECT project_id FROM mid_project_model WHERE model_id=(SELECT item_id FROM test_case WHERE id = #{caseId}))
  </select>
     <select id="selectModuleName"   resultMap="ModuleNameResult">
-        SELECT model_name
-        FROM project_model
-        WHERE model_id= (SELECT  model_id FROM project_team WHERE project_id =(SELECT  item_id  FROM test_case  WHERE id = #{caseId}))
+        SELECT model_name  FROM project_model  WHERE model_id=(SELECT item_id FROM test_case WHERE id = #{caseId})
     </select>
 </mapper>
