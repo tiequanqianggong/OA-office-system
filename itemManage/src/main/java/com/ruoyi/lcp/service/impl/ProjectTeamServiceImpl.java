@@ -205,6 +205,8 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
             //设置项目成员创建时间
             projectTeam.setTeamCreateTime(LocalDate.now());
             projectTeamMapper.update();
+            AddMidModelTeam(projectTeam.getModelId(),projectTeam.getTeamId());
+            AddMidProjectModel(projectTeam.getProjectId(),projectTeam.getModelId());
             int rows=projectTeamMapper.AddProjectTeam(projectTeam);
             if (redisCache.hasKey(projectTeamKey)){
                 redisCache.deleteObject(projectTeamKey);
@@ -215,9 +217,26 @@ public  class ProjectTeamServiceImpl implements IProjectTeamService {
         }
 
     }
+    /**
+     * 给中间表mid_model_team添加数据
+     * @param modelId
+     * @param teamId
+     */
+    public void AddMidModelTeam(Integer modelId,Long teamId){
+        projectTeamMapper.AddMidModelTeam(modelId,teamId);
+    }
+    /**
+     * 给中间表mid_project_model添加关联数据
+     * @param projectId
+     * @param modelId
+     */
+    public void AddMidProjectModel(Long projectId,Integer modelId){
+        projectTeamMapper.AddMidProjectModel(projectId,modelId);
+    }
 
 
-
+    
+    
 
     /**
      * 解决缓存穿透  缓存空数据到redis

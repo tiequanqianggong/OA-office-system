@@ -58,6 +58,18 @@ public class ProjectController extends BaseController {
                 projectVOList.add(projectVO);
             }
         }
+        if (projectVOList.get(0).getProjectName().equals("空项目")){
+            //手动封装若依框架中提供的TableDataInfo
+            TableDataInfo tableDataInfo=new TableDataInfo();
+            tableDataInfo.setCode(HttpStatus.SUCCESS);
+            tableDataInfo.setMsg("暂无数据");
+            tableDataInfo.setRows(null);
+            //获取线程中保存的集合大小
+            tableDataInfo.setTotal(0);
+
+            //将VO传给前端
+            return tableDataInfo;
+        }
 
         //手动封装若依框架中提供的TableDataInfo
         TableDataInfo tableDataInfo=new TableDataInfo();

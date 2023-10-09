@@ -35,6 +35,22 @@
                    #{teamUpdateTime}
                )
     </insert>
+    <insert id="AddMidModelTeam">
+        INSERT INTO  mid_model_team (model_id,team_id)
+        VALUES (
+                #{modelId},
+                #{teamId}
+               )
+    </insert>
+    <insert id="AddMidProjectModel">
+        INSERT INTO  mid_project_model (project_id, model_id)
+        VALUES (
+                #{projectId},
+                #{modelId}
+               )
+    </insert>
+
+
     <update id="UpdateProjectTeam" parameterType="com.ruoyi.lcp.pojo.ProjectTeam">
         UPDATE project_team
         <set>

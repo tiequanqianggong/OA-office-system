@@ -206,6 +206,11 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
 
     }
 
+    /**
+     * 添加项目
+     * @param project
+     * @return
+     */
     @Override
     @Transactional
     public int AddProject(Project project) {

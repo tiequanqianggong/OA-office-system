@@ -57,4 +57,19 @@ public interface ProjectTeamMapper {
      * @return
      */
     List<Long> countAllProjectTeam();
+
+
+    /**
+     * 给中间表mid_model_team添加数据
+     * @param modelId
+     * @param teamId
+     */
+    void AddMidModelTeam(Integer modelId, Long teamId);
+
+    /**
+     * 给中间表mid_project_model添加关联数据
+     * @param projectId
+     * @param modelId
+     */
+    void AddMidProjectModel(Long projectId, Integer modelId);
 }
