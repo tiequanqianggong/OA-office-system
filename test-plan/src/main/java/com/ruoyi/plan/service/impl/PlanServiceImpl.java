@@ -87,6 +87,19 @@ public class PlanServiceImpl implements PlanService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public List<PlanListVO> getPlanLikeList(Plan plan) {
+        List<Plan> planList = planMapper.searchTestPlans(plan);
+        return planList.stream()
+                .map(tmp -> {
+                    PlanListVO planVo = new PlanListVO();
+                    BeanUtils.copyBeanProp( planVo, tmp);
+                    //查询计划人员并封装
+                    planVo.setUserList(userPlanMapper.findUserListById(planVo.getTestPlanId()));
+                    return planVo;
+                }).collect(Collectors.toList());
+    }
+
     /**
      * 查询最近完成的五条测试计划
      * @return 计划集合
@@ -185,6 +198,8 @@ public class PlanServiceImpl implements PlanService {
      */
     @Override
     public int deletePlanByTestPlanIds(Long[] testPlanIds) {
+        userPlanMapper.deleteUserPlanByPlanIds(testPlanIds);
+        planProjectMapper.deletePlanProject(testPlanIds);
         return planMapper.deletePlanByTestPlanIds(testPlanIds);
     }
 
@@ -196,6 +211,7 @@ public class PlanServiceImpl implements PlanService {
      */
     @Override
     public int deletePlanByTestPlanId(Long testPlanId) {
+
         return planMapper.deletePlanByTestPlanId(testPlanId);
     }
 

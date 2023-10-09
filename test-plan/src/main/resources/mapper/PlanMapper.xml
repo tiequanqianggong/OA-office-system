@@ -26,12 +26,12 @@
         from test_plan
     </sql>
     <select id="selectPlanList" resultMap="PlanResult">
-        <include refid="selectPlanVo"/>
+        <include refid="selectPlanVo"/> where del_flag = 0
     </select>
 
     <select id="selectPlanByTestPlanId" parameterType="Long" resultMap="PlanResult">
         <include refid="selectPlanVo"/>
-        where test_plan_id = #{testPlanId}
+        where test_plan_id = #{testPlanId} AND del_flag = 0
     </select>
     
     <select id="selectPlanRecently" resultMap="PlanResult">
@@ -114,4 +114,16 @@
     <delete id="deleteComplete">
         delete from test_plan where del_flag = 1
     </delete>
+
+    <select id="searchTestPlans" parameterType="Plan" resultMap="PlanResult">
+        SELECT * FROM test_plan
+        WHERE  del_flag = 0
+           AND (test_plan_id  LIKE CONCAT('%', #{testPlanId}, '%')
+           OR plan_type LIKE CONCAT('%', #{type}, '%')
+           OR content LIKE CONCAT('%', #{content}, '%')
+           OR state LIKE CONCAT('%', #{state}, '%')
+           OR output LIKE CONCAT('%', #{output}, '%')
+           OR start_time LIKE CONCAT('%', #{startTime}, '%')
+           OR end_time LIKE CONCAT('%', #{endTime}, '%'))
+    </select>
 </mapper>

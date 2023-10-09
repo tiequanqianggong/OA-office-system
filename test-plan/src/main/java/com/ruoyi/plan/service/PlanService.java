@@ -31,6 +31,12 @@ public interface PlanService {
      */
     List<PlanListVO> getPlanList();
     /**
+     * 模糊查询查询测试计划
+     * @author lxz
+     * @return 测试计划集合
+     */
+    List<PlanListVO> getPlanLikeList(Plan plan);
+    /**
      * 查询最近完成的五条测试计划
      * @author lxz
      * @return 计划集合

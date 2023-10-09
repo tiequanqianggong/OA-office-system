@@ -37,4 +37,6 @@ public interface PlanProjectMapper {
      */
     int  updatePlanProject(PlanProject planProject);
 
+    int deletePlanProject(Long[] planIds);
+
 }
