@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.TestCaseMapper">
+    
+    <resultMap type="TestCase" id="TestCaseResult">
+        <result property="id"    column="id"    />
+        <result property="itemId"    column="item_id"    />
+        <result property="title"    column="title"    />
+        <result property="priority"    column="priority"    />
+        <result property="createName"    column="create_name"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="executeName"    column="execute_name"    />
+        <result property="executeDate"    column="execute_date"    />
+        <result property="preconditions"    column="preconditions"    />
+        <result property="keywords"    column="keywords"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+
+    <sql id="selectTestCaseVo">
+        select id, item_id, title, priority, create_name, create_date, execute_name, execute_date, preconditions, keywords, remarks from test_case
+    </sql>
+
+    <select id="selectTestCaseList" parameterType="TestCase" resultMap="TestCaseResult">
+        <include refid="selectTestCaseVo"/>
+        <where>  
+            <if test="itemId != null "> and item_id = #{itemId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="priority != null "> and priority = #{priority}</if>
+            <if test="createName != null  and createName != ''"> and create_name like concat('%', #{createName}, '%')</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="executeName != null  and executeName != ''"> and execute_name like concat('%', #{executeName}, '%')</if>
+            <if test="executeDate != null "> and execute_date = #{executeDate}</if>
+            <if test="preconditions != null  and preconditions != ''"> and preconditions = #{preconditions}</if>
+            <if test="keywords != null  and keywords != ''"> and keywords = #{keywords}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        </where>
+    </select>
+    
+    <select id="selectTestCaseById" parameterType="Long" resultMap="TestCaseResult">
+        <include refid="selectTestCaseVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Integer">
+        select id from test_case order by id desc limit 1;
+    </select>
+
+    <insert id="insertTestCase" parameterType="TestCase" useGeneratedKeys="true" keyProperty="id">
+        insert into test_case
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="itemId != null">item_id,</if>
+            <if test="title != null">title,</if>
+            <if test="priority != null">priority,</if>
+            <if test="createName != null">create_name,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="executeName != null">execute_name,</if>
+            <if test="executeDate != null">execute_date,</if>
+            <if test="preconditions != null">preconditions,</if>
+            <if test="keywords != null">keywords,</if>
+            <if test="remarks != null">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="itemId != null">#{itemId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="createName != null">#{createName},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="executeName != null">#{executeName},</if>
+            <if test="executeDate != null">#{executeDate},</if>
+            <if test="preconditions != null">#{preconditions},</if>
+            <if test="keywords != null">#{keywords},</if>
+            <if test="remarks != null">#{remarks},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestCase" parameterType="TestCase">
+        update test_case
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemId != null">item_id = #{itemId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="createName != null">create_name = #{createName},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="executeName != null">execute_name = #{executeName},</if>
+            <if test="executeDate != null">execute_date = #{executeDate},</if>
+            <if test="preconditions != null">preconditions = #{preconditions},</if>
+            <if test="keywords != null">keywords = #{keywords},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTestCaseById" parameterType="Long">
+        delete from test_case where id = #{id}
+    </delete>
+
+    <delete id="deleteTestCaseByIds" parameterType="String">
+        delete from test_case where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="Model_isEmpty" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            project_model
+        WHERE
+            model_id = #{id}
+    </select>
+</mapper>
