@@ -56,12 +56,18 @@ public class ZkTestCaseController extends BaseController {
     @ApiOperation("新增用例: 用例信息 + 用例步骤信息集合")
     public AjaxResult addTestCase(@RequestBody @ApiParam("用例信息") TestCase testCase)
     {
-        //生成 测试用例ID
-        Long caseId_uuid = (long) testCaseService.selectMaxId() + 1;
-        if (caseId_uuid == null)
-            caseId_uuid = 1L;
+        System.out.println("模块ID" + testCase.getItemId());
 
-        System.err.println("maxID " + caseId_uuid);
+        //判断项目模块ID是否存在
+        int i = testCaseService.Model_isEmpty(testCase.getItemId());
+        if(i<=0){
+            return error("模块不存在。");
+        }
+
+        //生成 测试用例ID
+        int maxId = testCaseService.selectMaxId();
+        Long caseId_uuid = (long) (maxId + 1);
+
 
 //        testCase.setExecuteName(getUsername());// 创建人
         testCase.setCreateDate(new Date());  // 创建时间

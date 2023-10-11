@@ -98,5 +98,11 @@ public class TestCaseServiceImpl implements ITestCaseService
         return testCaseMapper.deleteTestCaseById(id);
     }
 
+    /**
+     * 根据ID判断项目模块是否存在
+     */
+    public int Model_isEmpty(Long id){
+        return testCaseMapper.Model_isEmpty(id);
+    }
 
 }

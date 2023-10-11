@@ -64,4 +64,9 @@ public interface ITestCaseService
      */
     public int deleteTestCaseById(Long id);
 
+    /**
+     * 根据ID判断项目模块是否存在
+     */
+    public int Model_isEmpty(Long id);
+
 }

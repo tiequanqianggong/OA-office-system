@@ -104,4 +104,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="Model_isEmpty" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            project_model
+        WHERE
+            model_id = #{id}
+    </select>
 </mapper>

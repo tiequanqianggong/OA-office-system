@@ -21,12 +21,13 @@ public class TestCase extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 测试用例ID */
-    @ApiModelProperty(value = "用例ID", example = "8848")
+    @ApiModelProperty(value = "用例ID", example = "1")
+    @Excel(name = "用例ID")
     private Long id;
 
     /** 所属产品ID（关联项目ID） */
-    @ApiModelProperty(value = "所属产品ID（所属产品ID）", example = "8848")
-    @Excel(name = "所属产品ID", readConverterExp = "关=联项目ID")
+    @ApiModelProperty(value = "所属产品模块ID", example = "8848")
+    @Excel(name = "所属模块ID", readConverterExp = "关=联模块ID")
     private Long itemId;
 
     /** 用例标题 */
