@@ -1,0 +1,89 @@
+nohup: ignoring input
+Application Version: 3.8.6
+Spring Boot Version: 2.5.15
+////////////////////////////////////////////////////////////////////
+//                          _ooOoo_                               //
+//                         o8888888o                              //
+//                         88" . "88                              //
+//                         (| ^_^ |)                              //
+//                         O\  =  /O                              //
+//                      ____/`---'\____                           //
+//                    .'  \\|     |//  `.                         //
+//                   /  \\|||  :  |||//  \                        //
+//                  /  _||||| -:- |||||-  \                       //
+//                  |   | \\\  -  /// |   |                       //
+//                  | \_|  ''\---/''  |   |                       //
+//                  \  .-\__  `-`  ___/-. /                       //
+//                ___`. .'  /--.--\  `. . ___                     //
+//              ."" '<  `.___\_<|>_/___.'  >'"".                  //
+//            | | :  `- \`.;`\ _ /`;.`/ - ` : | |                 //
+//            \  \ `-.   \_ __\ /__ _/   .-` /  /                 //
+//      ========`-.____`-.___\_____/___.-`____.-'========         //
+//                           `=---='                              //
+//      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        //
+//             佛祖保佑       永不宕机      永无BUG               //
+////////////////////////////////////////////////////////////////////
+15:00:46.691 [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,21] - HV000001: Hibernate Validator 6.2.5.Final
+15:00:46.758 [main] INFO  c.r.RuoYiApplication - [logStarting,55] - Starting RuoYiApplication using Java 1.8.0_381 on iZ2zegp78fcrwax21sjg2oZ with PID 567335 (/home/ruoyi/ruoyi-admin.jar started by root in /home/ruoyi)
+15:00:46.758 [main] DEBUG c.r.RuoYiApplication - [logStarting,56] - Running with Spring Boot v2.5.15, Spring v5.3.27
+15:00:46.759 [main] INFO  c.r.RuoYiApplication - [logStartupProfileInfo,686] - The following 1 profile is active: "druid"
+15:00:50.910 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Initializing ProtocolHandler ["http-nio-8080"]
+15:00:50.911 [main] INFO  o.a.c.c.StandardService - [log,173] - Starting service [Tomcat]
+15:00:50.912 [main] INFO  o.a.c.c.StandardEngine - [log,173] - Starting Servlet engine: [Apache Tomcat/9.0.75]
+15:00:51.076 [main] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring embedded WebApplicationContext
+15:00:51.862 [main] DEBUG c.r.f.s.f.JwtAuthenticationTokenFilter - [init,242] - Filter 'jwtAuthenticationTokenFilter' configured for use
+15:00:54.313 [main] INFO  c.a.d.p.DruidDataSource - [init,996] - {dataSource-1} inited
+15:00:54.323 [main] DEBUG c.r.s.m.S.selectConfigList - [debug,137] - ==>  Preparing: select config_id, config_name, config_key, config_value, config_type, create_by, create_time, update_by, update_time, remark from sys_config
+15:00:54.365 [main] DEBUG c.r.s.m.S.selectConfigList - [debug,137] - ==> Parameters: 
+15:00:54.383 [main] DEBUG c.r.s.m.S.selectConfigList - [debug,137] - <==      Total: 6
+15:00:55.204 [main] DEBUG c.r.s.m.S.selectDictDataList - [debug,137] - ==>  Preparing: select dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, list_class, is_default, status, create_by, create_time, remark from sys_dict_data WHERE status = ? order by dict_sort asc
+15:00:55.214 [main] DEBUG c.r.s.m.S.selectDictDataList - [debug,137] - ==> Parameters: 0(String)
+15:00:55.236 [main] DEBUG c.r.s.m.S.selectDictDataList - [debug,137] - <==      Total: 29
+15:00:55.967 [main] INFO  o.q.i.StdSchedulerFactory - [instantiate,1220] - Using default implementation for ThreadExecutor
+15:00:55.987 [main] INFO  o.q.c.SchedulerSignalerImpl - [<init>,61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+15:00:55.988 [main] INFO  o.q.c.QuartzScheduler - [<init>,229] - Quartz Scheduler v.2.3.2 created.
+15:00:55.989 [main] INFO  o.q.s.RAMJobStore - [initialize,155] - RAMJobStore initialized.
+15:00:55.990 [main] INFO  o.q.c.QuartzScheduler - [initialize,294] - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+15:00:55.990 [main] INFO  o.q.i.StdSchedulerFactory - [instantiate,1374] - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+15:00:55.990 [main] INFO  o.q.i.StdSchedulerFactory - [instantiate,1378] - Quartz scheduler version: 2.3.2
+15:00:55.990 [main] INFO  o.q.c.QuartzScheduler - [setJobFactory,2293] - JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@2187fff7
+15:00:56.027 [main] DEBUG c.r.q.m.S.selectJobAll - [debug,137] - ==>  Preparing: select job_id, job_name, job_group, invoke_target, cron_expression, misfire_policy, concurrent, status, create_by, create_time, remark from sys_job
+15:00:56.028 [main] DEBUG c.r.q.m.S.selectJobAll - [debug,137] - ==> Parameters: 
+15:00:56.040 [main] DEBUG c.r.q.m.S.selectJobAll - [debug,137] - <==      Total: 3
+15:00:56.410 [main] INFO  org.redisson.Version - [logVersion,41] - Redisson 3.18.0
+15:00:56.607 [redisson-netty-5-8] INFO  o.r.c.p.MasterPubSubConnectionPool - [lambda$createConnection$0,162] - 1 connections initialized for 59.110.32.219/59.110.32.219:6379
+15:00:56.749 [redisson-netty-5-19] INFO  o.r.c.p.MasterConnectionPool - [lambda$createConnection$0,162] - 24 connections initialized for 59.110.32.219/59.110.32.219:6379
+15:00:59.123 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-8080"]
+15:00:59.128 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - [refresh,591] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8080 is already in use
+15:00:59.190 [main] INFO  o.q.c.QuartzScheduler - [shutdown,666] - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+15:00:59.190 [main] INFO  o.q.c.QuartzScheduler - [standby,585] - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+15:00:59.191 [main] INFO  o.q.c.QuartzScheduler - [shutdown,740] - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+15:00:59.191 [main] INFO  sys-user - [shutdownAsyncManager,31] - ====关闭后台任务任务线程池====
+15:00:59.192 [main] WARN  o.s.c.a.CommonAnnotationBeanPostProcessor - [postProcessBeforeDestruction,185] - Destroy method on bean with name 'shutdownManager' threw an exception: java.lang.ExceptionInInitializerError
+15:00:59.201 [main] INFO  c.a.d.p.DruidDataSource - [close,2138] - {dataSource-1} closing ...
+15:00:59.218 [main] INFO  c.a.d.p.DruidDataSource - [close,2211] - {dataSource-1} closed
+15:00:59.342 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Pausing ProtocolHandler ["http-nio-8080"]
+15:00:59.342 [main] INFO  o.a.c.c.StandardService - [log,173] - Stopping service [Tomcat]
+15:00:59.349 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Stopping ProtocolHandler ["http-nio-8080"]
+15:00:59.349 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Destroying ProtocolHandler ["http-nio-8080"]
+15:00:59.381 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - [report,40] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
