@@ -7,10 +7,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.defects.domain.ProjectName;
-import com.ruoyi.defects.domain.Defects;
+import com.ruoyi.defects.domain.*;
 import com.ruoyi.defects.domain.Module;
-import com.ruoyi.defects.domain.Team;
 import com.ruoyi.defects.service.IDefectsService;
 import com.ruoyi.defects.service.ITeamService;
 import com.ruoyi.framework.web.service.TokenService;
@@ -76,15 +74,42 @@ public class DefectsController extends BaseController
     /**
      * 导出缺陷管理列表
      */
+//    @PreAuthorize("@ss.hasPermi('defects:defects:export')")
+//    @Log(title = "缺陷管理", businessType = BusinessType.EXPORT)
+//    @PostMapping("/export")
+//    @ApiOperation("导出缺陷管理列表")
+//    public void export(HttpServletResponse response, Defects defects)
+//    {
+//        List<Defects> list = defectsService.selectDefectsList(defects);
+//        ExcelUtil<Defects> util = new ExcelUtil<Defects>(Defects.class);
+//        util.exportExcel(response, list, "缺陷管理数据");
+//    }
+
+    /**
+     * 导出缺陷管理列表
+     */
     @PreAuthorize("@ss.hasPermi('defects:defects:export')")
     @Log(title = "缺陷管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ApiOperation("导出缺陷管理列表")
-    public void export(HttpServletResponse response, Defects defects)
+    public void export(HttpServletResponse response)
     {
-        List<Defects> list = defectsService.selectDefectsList(defects);
-        ExcelUtil<Defects> util = new ExcelUtil<Defects>(Defects.class);
-        util.exportExcel(response, list, "缺陷管理数据");
+        List<Export> exportList = defectsService.exportDefectsList();
+        ExcelUtil<Export> util = new ExcelUtil<Export>(Export.class);
+        util.exportExcel(response, exportList, "缺陷管理数据");
+    }
+
+    /**
+     * 导出测试
+     */
+    @PreAuthorize("@ss.hasPermi('defects:defects:export')")
+    @Log(title = "缺陷管理", businessType = BusinessType.EXPORT)
+    @PostMapping("/exportTest")
+    @ApiOperation("导出缺陷管理列表")
+    public TableDataInfo exportTest()
+    {
+        List<Export> exportList = defectsService.exportDefectsList();
+        return getDataTable(exportList);
     }
 
 

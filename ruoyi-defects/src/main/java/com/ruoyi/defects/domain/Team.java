@@ -6,11 +6,11 @@ import io.swagger.annotations.ApiModelProperty;
 public class Team {
 
     /** 成员id */
-    @Excel(name = "分配给某成员")
+//    @Excel(name = "分配给某成员")
     @ApiModelProperty("分配给某成员")
     private Long teamId;
     /** 成员姓名 */
-    @Excel(name = "成员姓名")
+    @Excel(name = "分配成员姓名")
     @ApiModelProperty("成员姓名")
     private String teamName;
 

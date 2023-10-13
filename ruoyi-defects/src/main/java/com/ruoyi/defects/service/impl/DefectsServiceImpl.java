@@ -11,6 +11,7 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
+import com.ruoyi.defects.domain.Export;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,6 +163,12 @@ public class DefectsServiceImpl implements IDefectsService
     @Override
     public long selectMaxId() {
         return defectsMapper.selectMaxId();
+    }
+
+    @Override
+    public List<Export> exportDefectsList() {
+        List<Export> exportList = defectsMapper.exportDefectsLis();
+        return exportList;
     }
 
 

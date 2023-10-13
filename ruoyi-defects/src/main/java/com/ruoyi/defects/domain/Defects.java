@@ -1,10 +1,7 @@
 package com.ruoyi.defects.domain;
 
 import java.util.Date;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.lcp.pojo.vo.ProjectTeamVO;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -46,12 +43,12 @@ public class Defects extends BaseEntity
     private String summary;
 
     /** 缺陷详细描述(用例id、操作步骤、预期结果、实际结果) */
-    @Excel(name = "缺陷详细描述(用例id、操作步骤、预期结果、实际结果)")
+    @Excel(name = "缺陷详细描述")
     @ApiModelProperty("缺陷详细描述")
     private String description;
 
     /** 严重程度(高、中、低优先级) */
-    @Excel(name = "严重程度(高、中、低优先级)")
+    @Excel(name = "严重程度")
     @ApiModelProperty("严重程度")
     private String severity;
 
@@ -72,8 +69,8 @@ public class Defects extends BaseEntity
     @ApiModelProperty("发现日期")
     private Date detectedDate;
 
-    /** 分配给某成员 */
-    @Excel(name = "分配给某成员")
+    /** 分配给某成员id */
+//    @Excel(name = "分配给某成员")
     @ApiModelProperty("分配给某成员")
     private Long teamId;
 
@@ -83,7 +80,7 @@ public class Defects extends BaseEntity
     private String priority;
 
     /** 成员对象 */
-    @Excel(name = "成员对象")
+//    @Excel(name = "成员对象")
     @ApiModelProperty("成员对象")
     private Team team;
 

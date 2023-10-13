@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.defects.domain.Defects;
+import com.ruoyi.defects.domain.Export;
 
 /**
  * 缺陷管理Service接口
@@ -64,4 +65,6 @@ public interface IDefectsService
 
     //查询最大id
     public long selectMaxId();
+    //导出
+    List<Export> exportDefectsList();
 }
