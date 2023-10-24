@@ -115,7 +115,7 @@ public class ProjectController extends BaseController {
     @Log(title = "项目管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete")
     @ApiImplicitParam(name = "DeleteListProject",value = "根据projectId批量删除")
-    public  AjaxResult DeleteListProject(List<Long> projectIds){
+    public  AjaxResult DeleteListProject(@RequestParam("projectIds") List<Long> projectIds){
         //当前项目是否能删除
         for (Long id : projectIds) {
             int status=iProjectService.selectStatusByProjectId(id);
