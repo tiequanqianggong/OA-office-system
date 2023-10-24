@@ -2,6 +2,7 @@ package com.ruoyi.defects.mapper;
 
 import java.util.List;
 import com.ruoyi.defects.domain.Defects;
+import com.ruoyi.defects.domain.Export;
 
 /**
  * 缺陷管理Mapper接口
@@ -60,4 +61,6 @@ public interface DefectsMapper
     public int deleteDefectsByDefectIds(Long[] defectIds);
 
     public long selectMaxId();
+    //导出
+    List<Export> exportDefectsLis();
 }

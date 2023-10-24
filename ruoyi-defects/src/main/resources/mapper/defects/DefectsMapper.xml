@@ -23,6 +23,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <result column="team_name" property="teamName"/>
         </association>
     </resultMap>
+    <resultMap type="export" id="ExportResult">
+        <result property="defectId"    column="defect_id"    />
+        <result property="caseId"    column="case_id"    />
+        <result property="moduleName"    column="module_name"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="summary"    column="summary"    />
+        <result property="description"    column="description"    />
+        <result property="severity"    column="severity"    />
+        <result property="status"    column="status"    />
+        <result property="detectedBy"    column="detected_by"    />
+        <result property="detectedDate"    column="detected_date"    />
+        <result property="teamName"    column="team_name"    />
+        <result property="priority"    column="priority"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+
+
+    <select id="exportDefectsLis" resultMap="ExportResult">
+        SELECT  d.defect_id,d.case_id,d.module_name,d.project_name,d.summary,d.description,d.severity,d.`status`,d.detected_by,d.detected_date,pt.team_name,d.priority,d.remark  FROM project_team pt  JOIN defects d ON pt.team_id =d.team_id
+    </select>
 
     <sql id="selectDefectsVo">
         SELECT pt.team_id,pt.team_name,d.defect_id,d.case_id,d.module_name,d.project_name,d.summary,d.description,d.severity,d.`status`,d.detected_by,d.detected_date,d.team_id,d.priority,d.remark
