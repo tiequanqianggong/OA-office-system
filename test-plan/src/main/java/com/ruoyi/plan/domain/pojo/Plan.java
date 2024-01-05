@@ -2,6 +2,8 @@ package com.ruoyi.plan.domain.pojo;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -26,12 +28,14 @@ public class Plan extends BaseEntity{
     /**
      * 测试计划
      */
+    @JsonIgnore
     @ApiModelProperty("项目计划id")
     private Long testPlanId;
 
     /**
      * 项目计划类型
      */
+    @JsonProperty
     @ApiModelProperty("项目计划类型")
     @Excel(name = "项目计划类型")
     private String type;
@@ -39,6 +43,7 @@ public class Plan extends BaseEntity{
     /**
      * 测试计划内容
      */
+    @JsonProperty
     @ApiModelProperty("测试计划内容")
     @Excel(name = "测试计划内容")
     private String content;
@@ -46,6 +51,7 @@ public class Plan extends BaseEntity{
     /**
      *  状态(0: 未开始 1: 执行中2：完成)
      */
+    @JsonProperty
     @ApiModelProperty("状态(0: 未开始 1: 执行中2：完成)")
     @Excel(name = "状态(0: 未开始 1: 执行中2：完成)")
     private String state;
@@ -53,6 +59,7 @@ public class Plan extends BaseEntity{
     /**
      * 产出内容
      */
+    @JsonProperty
     @ApiModelProperty("产出内容")
     @Excel(name = "产出内容")
     private String output;
@@ -60,6 +67,7 @@ public class Plan extends BaseEntity{
     /**
      * 开始时间
      */
+    @JsonProperty
     @ApiModelProperty("开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -68,6 +76,7 @@ public class Plan extends BaseEntity{
     /**
      * 截止时间
      */
+    @JsonProperty
     @ApiModelProperty("截止时间")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "截止时间", width = 30, dateFormat = "yyyy-MM-dd")

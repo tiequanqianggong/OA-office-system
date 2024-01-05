@@ -70,11 +70,11 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: 59.110.32.219
+    host: 10.25.18.103
     # 端口，默认为6379
     port: 6379
     # 数据库索引
-    database: 5
+    database: 0
     # 密码
     password: lxrzh535179
     # 连接超时时间
@@ -107,11 +107,6 @@ mybatis:
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 加载全局的配置文件
   configLocation: classpath:mybatis/mybatis-config.xml
-mybatis-plus:
-  # 搜索指定包别名
-  typeAliasesPackage: com.ruoyi.**.domain
-  # 配置mapper的扫描，找到所有的mapper.xml映射文件
-  mapperLocations: classpath*:mapper/**/*Mapper.xml
 
 # PageHelper分页插件
 pagehelper:
@@ -122,7 +117,7 @@ pagehelper:
 # Swagger配置
 swagger:
   # 是否开启swagger
-  enabled: false
+  enabled: true
   # 请求前缀
   pathMapping: /dev-api
 

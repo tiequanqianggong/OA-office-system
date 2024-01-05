@@ -14,7 +14,7 @@ import com.ruoyi.plan.service.PlanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,7 @@ import java.util.List;
  * @author lxz
  */
 @RestController
+@Slf4j
 @RequestMapping("/test/plan")
 @Api(tags = "测试计划")
 public class PlanController extends BaseController {
@@ -40,16 +41,16 @@ public class PlanController extends BaseController {
     /**
      * 查询测试计划列表
      * @author liupian
-     * @date 2023/9/12 16:24:52
-     */
-//    @PreAuthorize("@ss.hasPermi('test:plan:list')")
-    @ApiOperation(value = "查询测试计划列表" )
-    @GetMapping("/list")
-    public TableDataInfo getPlanList(){
-        startPage();
-        List<PlanListVO> list = planService.getPlanList();
-        return getDataTable(list);
 
+   * @date 2023/9/12 16:24:52
+                */
+//    @PreAuthorize("@ss.hasPermi('test:plan:list')")
+        @ApiOperation(value = "查询测试计划列表" )
+        @GetMapping("/list")
+        public TableDataInfo getPlanList(Plan plan){
+            startPage();
+            List<PlanListVO> list = planService.getPlanList(plan);
+            return getDataTable(list);
     }
     /**
      * 查询测试计划
@@ -69,9 +70,10 @@ public class PlanController extends BaseController {
      * @author liupian
      * @date 2023/9/12 16:24:52
      */
+    @PreAuthorize("@ss.hasPermi('test:plan:like')")
     @ApiOperation(value = "模糊查询测试计划" )
     @PostMapping("/like")
-    public TableDataInfo getPlanLikeList(@RequestBody  Plan plan){
+    public TableDataInfo getQuery(@RequestBody Plan plan){
         startPage();
         List<PlanListVO> list = planService.getPlanLikeList(plan);
         return getDataTable(list);
@@ -91,14 +93,15 @@ public class PlanController extends BaseController {
     /**
      * 导出测试计划列表
      */
-//    @PreAuthorize("@ss.hasPermi('test:plan:export')")
+    @PreAuthorize("@ss.hasPermi('test:plan:export')")
     @Log(title = "测试计划", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ApiOperation("导出测试计划列表")
     public void export(HttpServletResponse response)
     {
-        List<PlanListVO> list = planService.getPlanList();
-        ExcelUtil<PlanListVO> util = new ExcelUtil<PlanListVO>(PlanListVO.class);
+
+        List<Plan> list = planService.exportPlanList();
+        ExcelUtil<Plan> util = new ExcelUtil<Plan>(Plan.class);
         util.exportExcel(response, list, "测试计划数据");
     }
     /**
@@ -139,4 +142,14 @@ public class PlanController extends BaseController {
     public AjaxResult updatePlan(@Validated @RequestBody UpdatePlanDTO updatePlanDTO){
         return toAjax(planService.updatePlan(updatePlanDTO));
     }
+
+
+    /*/**
+     * TODO     模糊查询测试计划
+     * Created on 2023/12/25 10:30
+     *@author:
+     *@param:  * @param null
+     *@return: {@link null}
+     *@throws:
+     */
 }

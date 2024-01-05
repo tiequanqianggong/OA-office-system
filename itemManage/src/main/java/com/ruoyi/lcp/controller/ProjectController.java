@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.ruoyi.common.utils.PageUtils.startPage;
 import static com.ruoyi.lcp.constant.ProjectConstants.ProjectPending;
@@ -94,9 +95,9 @@ public class ProjectController extends BaseController {
     @ApiOperation("项目管理删除")
     @PreAuthorize("@ss.hasPermi('system:project:delete')")
     @Log(title = "项目管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete/{projectId}")
+    @DeleteMapping("/delete/one")
     @ApiImplicitParam(name = "DeleteProject",value = "根据projectId删除")
-    public AjaxResult DeleteProject(@PathVariable Long projectId){
+    public AjaxResult DeleteProject(@RequestParam Long projectId){
         //通过提供id条件 条件查询
         ProjectPageQueryDTO projectPageQueryDTO=ProjectPageQueryDTO.builder()
                 .projectId(projectId)
@@ -110,6 +111,8 @@ public class ProjectController extends BaseController {
         }
         return toAjax(iProjectService.deleteProject(projectId));
     }
+
+
     @ApiOperation("项目管理批量删除")
     @PreAuthorize("@ss.hasPermi('system:project:delete')")
     @Log(title = "项目管理", businessType = BusinessType.DELETE)
@@ -175,6 +178,16 @@ public class ProjectController extends BaseController {
                 iProjectService.UpdateProject(projectUpdateDTO);
                 return AjaxResult.success("项目——" + project_delFlag.getProjectName() + "——已重新启用");
         }
+        project.setProjectStatus(4);
         return toAjax(iProjectService.AddProject(project));
+    }
+    @ApiOperation("获取项目列表")
+    @ApiImplicitParam(name = "getAllProject",value = "获取项目列表")
+    @PreAuthorize("@ss.hasPermi('system:project:query')")
+    @Log(title = "获取项目列表",businessType = BusinessType.OTHER)
+    @GetMapping("/projectable")
+    public TableDataInfo getAllProject(){
+        List<Map<String, Object>> allProject = iProjectService.getAllProject();
+        return getDataTable(allProject);
     }
 }

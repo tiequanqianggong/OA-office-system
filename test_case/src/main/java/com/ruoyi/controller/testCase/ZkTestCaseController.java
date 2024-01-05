@@ -22,7 +22,7 @@ import java.util.*;
  */
 @RestController
 @Api(tags = "测试用例模块接口")
-@RequestMapping("zk")
+@RequestMapping("/zk")
 public class ZkTestCaseController extends BaseController {
     @Autowired
     private ITestCaseService testCaseService;

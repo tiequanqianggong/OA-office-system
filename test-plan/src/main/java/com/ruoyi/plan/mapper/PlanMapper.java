@@ -3,6 +3,7 @@ package com.ruoyi.plan.mapper;
 
 
 import com.ruoyi.plan.domain.pojo.Plan;
+import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface  PlanMapper {
      * @return  测试计划集合
      */
 
-    List<Plan> selectPlanList();
+    List<Plan> selectPlanList(Plan plan);
     /**
      * 查询最近完成的5条最近完成测试计划
      * @author liupian
@@ -98,4 +99,10 @@ public interface  PlanMapper {
     List<Plan> searchTestPlans(Plan plan);
 
 
+    List<Plan> exportPlanList();
+
+//    @SelectProvider(type = YourSqlProvider.class, method = "getBoundSql")
+    String getBoundSql(String statementId,Object parameterObject);
+
+    void update();
 }

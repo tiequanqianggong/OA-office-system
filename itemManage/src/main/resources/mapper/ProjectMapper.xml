@@ -160,5 +160,9 @@
         SELECT project_status FROM project where  project_id=#{projectId} and project_del_flag = '0'
     </select>
 
+    <select id="getAllProject" resultType="java.util.Map">
+        select project_id as projectId,project_name as projectName from project where project_status != 0 AND project_del_flag = '0'
+    </select>
+
 
 </mapper>

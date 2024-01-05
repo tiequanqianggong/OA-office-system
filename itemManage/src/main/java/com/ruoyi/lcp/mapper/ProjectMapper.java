@@ -6,6 +6,7 @@ import com.ruoyi.lcp.pojo.dto.ProjectPageQueryDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Mapper
@@ -72,4 +73,5 @@ public interface ProjectMapper extends BaseMapper<Project> {
 //     * @param project
 //     */
 //    void UpdateProjectId(Project project);
+    List<Map<String,Object>> getAllProject();
 }

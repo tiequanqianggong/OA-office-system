@@ -21,7 +21,7 @@
   </select>
 
  <select id="selectProjectName" resultMap="ProjectNameResult">
-        SELECT project_name     FROM project p    WHERE  project_id=(SELECT project_id FROM mid_project_model WHERE model_id=(SELECT item_id FROM test_case WHERE id = #{caseId}))
+        SELECT project_name FROM project p join test_case c on p.project_id = c.item_id where c.id = #{caseId}
  </select>
     <select id="selectModuleName"   resultMap="ModuleNameResult">
         SELECT model_name  FROM project_model  WHERE model_id=(SELECT item_id FROM test_case WHERE id = #{caseId})

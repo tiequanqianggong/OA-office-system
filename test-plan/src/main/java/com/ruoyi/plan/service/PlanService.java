@@ -29,7 +29,7 @@ public interface PlanService {
      * @author lxz
      * @return 测试计划集合
      */
-    List<PlanListVO> getPlanList();
+    List<PlanListVO> getPlanList(Plan plan);
     /**
      * 模糊查询查询测试计划
      * @author lxz
@@ -76,5 +76,5 @@ public interface PlanService {
      */
     int deletePlanByTestPlanId(Long testPlanId);
 
-
+    List<Plan> exportPlanList();
 }

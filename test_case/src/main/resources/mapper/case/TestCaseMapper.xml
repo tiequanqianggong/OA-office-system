@@ -19,22 +19,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTestCaseVo">
-        select id, item_id, title, priority, create_name, create_date, execute_name, execute_date, preconditions, keywords, remarks from test_case
+        select tc.id,tc.item_id,tc.title,tc.priority,tc.create_name,tc.create_date,tc.execute_name,tc.execute_date,tc.preconditions,tc.keywords,tc.remarks from test_case tc
+    </sql>
+    <sql id="selectTestCaseVoPlus">
+        SELECT
+            tc.id,
+            tc.item_id,
+            p.project_name AS projectName,
+            tc.title,
+            tc.priority,
+            tc.create_name,
+            tc.create_date,
+            tc.execute_name,
+            tc.execute_date,
+            tc.preconditions,
+            tc.keywords,
+            tc.remarks
+        FROM
+            test_case tc
+                LEFT JOIN project p ON tc.item_id = p.project_id
     </sql>
 
     <select id="selectTestCaseList" parameterType="TestCase" resultMap="TestCaseResult">
         <include refid="selectTestCaseVo"/>
-        <where>  
-            <if test="itemId != null "> and item_id = #{itemId}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="priority != null "> and priority = #{priority}</if>
-            <if test="createName != null  and createName != ''"> and create_name like concat('%', #{createName}, '%')</if>
-            <if test="createDate != null "> and create_date = #{createDate}</if>
-            <if test="executeName != null  and executeName != ''"> and execute_name like concat('%', #{executeName}, '%')</if>
-            <if test="executeDate != null "> and execute_date = #{executeDate}</if>
-            <if test="preconditions != null  and preconditions != ''"> and preconditions = #{preconditions}</if>
-            <if test="keywords != null  and keywords != ''"> and keywords = #{keywords}</if>
-            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        <where>
+<!--            <if test="projectName != null and projectName != ''"> and p.project_name LIKE CONCAT('%', #{projectName}, '%')</if>-->
+            <if test="itemId != null "> and tc.item_id = #{itemId}</if>
+            <if test="title != null  and title != ''"> and tc.title LIKE CONCAT('%', #{title}, '%')</if>
+            <if test="priority != null "> and tc.priority = #{priority}</if>
+            <if test="createName != null  and createName != ''"> and tc.create_name LIKE CONCAT('%', #{createName}, '%')</if>
+            <if test="createDate != null "> and tc.create_date = #{createDate}</if>
+            <if test="executeName != null  and executeName != ''"> and tc.execute_name LIKE CONCAT('%', #{executeName}, '%')</if>
+            <if test="executeDate != null "> and tc.execute_date = #{executeDate}</if>
+            <if test="preconditions != null  and preconditions != ''"> and tc.preconditions LIKE CONCAT('%', #{preconditions}, '%')</if>
+            <if test="keywords != null  and keywords != ''"> and tc.keywords LIKE CONCAT('%', #{keywords}, '%')</if>
+            <if test="remarks != null  and remarks != ''"> and tc.remarks LIKE CONCAT('%', #{remarks}, '%')</if>
         </where>
     </select>
     

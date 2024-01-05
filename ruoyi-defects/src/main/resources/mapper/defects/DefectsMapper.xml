@@ -64,7 +64,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and d.status like concat('%',#{status},'%') </if>
             <if test="detectedBy != null  and detectedBy != ''"> and d.detected_by like concat('%', #{detectedBy},'%')</if>
             <if test="detectedDate != null "> and d.detected_date like concat('%', #{detectedDate},'%')</if>
-<!--            <if test="teamName != null  and teamName != ''"> and pt.team_name = #{teamName}</if>-->
             <if test="teamId != null  and teamId != ''"> and pt.team_id like concat('%',#{teamId},'%') </if>
             <if test="priority != null  and priority != ''"> and d.priority like concat('%', #{priority},'%')</if>
         </where>
@@ -80,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="defectId != null">defect_id,</if>
             <if test="caseId != null">case_id,</if>
-            <if test="moduleName != null  and moduleName != ''">module_name,</if>
+            <if test="moduleName != null and moduleName != ''">module_name,</if>
             <if test="projectName != null  and projectName != ''">project_name,</if>
             <if test="summary != null and summary != ''">summary,</if>
             <if test="description != null and description != ''">description,</if>
@@ -91,11 +90,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teamId != null and teamId != ''">team_id,</if>
             <if test="priority != null  and priority != ''">priority,</if>
             <if test="remark != null">remark,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="defectId != null">#{defectId},</if>
             <if test="caseId != null">#{caseId},</if>
-            <if test="moduleName != null">#{moduleName},</if>
+            <if test="moduleName != null and moduleName != ''">#{moduleName},</if>
             <if test="projectName != null">#{projectName},</if>
             <if test="summary != null and summary != ''">#{summary},</if>
             <if test="description != null and description != ''">#{description},</if>
@@ -106,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teamId != null and teamId != ''">#{teamId},</if>
             <if test="priority != null  and priority != ''">#{priority},</if>
             <if test="remark != null">#{remark},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateDefects" parameterType="Defects">

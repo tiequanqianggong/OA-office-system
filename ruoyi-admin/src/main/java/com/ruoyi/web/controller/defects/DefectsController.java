@@ -15,6 +15,7 @@ import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.system.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/defects")
 @Api("缺陷管理")
+@Slf4j
 public class DefectsController extends BaseController
 {
     @Autowired
@@ -195,22 +197,23 @@ public class DefectsController extends BaseController
     public AjaxResult add(@RequestBody Defects defects)
     {
         Long caseId_uuid = 1L;
+        int result = 0;
         try {
             long maxid = defectsService.selectMaxId();
             //生成 测试用例ID
             caseId_uuid= maxid+1;
-        }catch (Exception e)
-        {
-
+            System.err.println("maxID " + caseId_uuid);
+            defects.setDefectId(caseId_uuid);
+            result = defectsService.insertDefects(defects);
+        }catch (RuntimeException ex){
+            return error("缺陷信息已存在");
         }
-
-
-
-
-        System.err.println("maxID " + caseId_uuid);
-
-        defects.setDefectId(caseId_uuid);
-        return toAjax(defectsService.insertDefects(defects));
+        catch (Exception e)
+        {
+            log.error("处理缺陷信息时发生异常");
+            return error("操作失败，请联系管理员");
+        }
+        return toAjax(result);
     }
 
     /**

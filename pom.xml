@@ -195,10 +195,6 @@
                 <artifactId>test-plan</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-defects</artifactId>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -6,6 +6,7 @@ import com.ruoyi.lcp.pojo.dto.ProjectPageQueryDTO;
 import com.ruoyi.lcp.pojo.dto.ProjectUpdateDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IProjectService extends IService<Project> {
     /**
@@ -76,6 +77,7 @@ public interface IProjectService extends IService<Project> {
     int deleteListProject(List<Long> projectIds);
 
 
+    List<Map<String,Object>> getAllProject();
 
 //    /**
 //     * 根据project 修改projectId

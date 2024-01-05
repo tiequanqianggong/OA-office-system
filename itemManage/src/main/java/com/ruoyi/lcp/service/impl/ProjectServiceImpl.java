@@ -1,8 +1,6 @@
 package com.ruoyi.lcp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.pagehelper.PageHelper;
-import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.lcp.constant.BaseContext;
 import com.ruoyi.lcp.constant.RedisConstants;
@@ -16,7 +14,6 @@ import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.lcp.service.IProjectService;
 import com.ruoyi.lcp.util.PageUtil;
 import com.ruoyi.lcp.util.RedisU;
-import com.ruoyi.lcp.util.SortUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
@@ -32,7 +29,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import static com.ruoyi.lcp.constant.ProjectConstants.ProjectPending;
 import static com.ruoyi.lcp.constant.RedissonConstants.ReadLock;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -325,5 +321,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project>imple
         }finally {
             readLock.unlock();
         }
+    }
+    @Override
+    public List<Map<String,Object>> getAllProject(){
+        return projectMapper.getAllProject();
     }
 }

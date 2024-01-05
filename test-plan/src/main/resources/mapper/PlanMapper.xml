@@ -16,18 +16,11 @@
     </resultMap>
 
     <sql id="selectPlanVo">
-        select test_plan_id,
-               plan_type,
-               content,
-               state,
-               output,
-               start_time,
-               end_time
-        from test_plan
+        select t.test_plan_id,t.plan_type,t.content,t.state,t.output,t.start_time,t.end_time from test_plan t
     </sql>
-    <select id="selectPlanList" resultMap="PlanResult">
-        <include refid="selectPlanVo"/> where del_flag = 0
-    </select>
+    <select id="selectPlanList" resultMap="PlanResult" parameterType="Plan">
+    <include refid="selectPlanVo"/> where del_flag = 0
+</select>
 
     <select id="selectPlanByTestPlanId" parameterType="Long" resultMap="PlanResult">
         <include refid="selectPlanVo"/>
@@ -110,20 +103,32 @@
         </set>
         WHERE test_plan_id = #{testPlanId}
     </update>
+    <update id="update" >
+        <!-- 修改表自增序列的起始值 -->
+        ALTER TABLE project AUTO_INCREMENT = 1;
+    </update>
 
     <delete id="deleteComplete">
         delete from test_plan where del_flag = 1
     </delete>
 
     <select id="searchTestPlans" parameterType="Plan" resultMap="PlanResult">
-        SELECT * FROM test_plan
-        WHERE  del_flag = 0
-           AND (test_plan_id  LIKE CONCAT('%', #{testPlanId}, '%')
-           OR plan_type LIKE CONCAT('%', #{type}, '%')
-           OR content LIKE CONCAT('%', #{content}, '%')
-           OR state LIKE CONCAT('%', #{state}, '%')
-           OR output LIKE CONCAT('%', #{output}, '%')
-           OR start_time LIKE CONCAT('%', #{startTime}, '%')
-           OR end_time LIKE CONCAT('%', #{endTime}, '%'))
+        <include refid="selectPlanVo"/>
+        <where>
+            <!--<if test="testPlanId != null "> and t.testPlanId = #{testPlanId}</if>-->
+            <if test="type != null and type != ''"> and t.plan_type like concat('%',#{type},'%')</if>
+            <if test="content != null and content != ''"> and t.content like concat('%',#{content},'%')</if>
+            <if test="state != null and state != ''"> and t.state like concat('%',#{state},'%')</if>
+            <if test="output != null and output != ''"> and t.output like concat('%',#{output},'%')</if>
+            <if test="startTime != null "> and t.startTime &gt;= #{startTime}</if>
+            <if test="endTime != null "> and t.endTime &lt;= #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="exportPlanList" resultType="com.ruoyi.plan.domain.pojo.Plan">
+        <include refid="selectPlanVo"></include>
+    </select>
+    <select id="getBoundSql" resultType="java.lang.String">
+
     </select>
 </mapper>
